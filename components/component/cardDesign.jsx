@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
+import * as html2canvas from 'html2canvas'
 
 import { useState } from "react"
 
@@ -14,6 +15,21 @@ export function CardDesign() {
   let [desc, setDesc] = useState("Here goes your description")
   let [file, setFile] = useState("/placeholder.svg");
 
+
+  const handleDownloadImage = async () => {
+    const element = document.getElementById('print'),
+      canvas = await html2canvas(element),
+      data = canvas.toDataURL('image/jpg'),
+      link = document.createElement('a');
+
+    link.href = data;
+    link.download = 'downloaded-image.jpg';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     (<div className="max-w-4xl mx-auto p-6 sm:p-8">
       <div className="grid md:grid-cols-2 gap-8">
@@ -21,6 +37,7 @@ export function CardDesign() {
           <Card className="h-full">
             <CardContent className="flex flex-col items-center justify-center h-full">
               <div
+                id="print"
                 className="bg-[#f0f0f0] rounded-lg shadow-lg p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center">
                 <img
                   src={file}
@@ -61,7 +78,7 @@ export function CardDesign() {
                     <SelectItem value="500x700">500x700</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button>Export</Button>
+              <Button onClick={handleDownloadImage}>Export</Button>
               </div>
             </CardFooter>
           </Card>
@@ -76,7 +93,7 @@ export function CardDesign() {
               <div className="grid gap-2">
                 <Label htmlFor="image">Card Image</Label>
                 <div className="flex items-center gap-2">
-                  <Input id="image" type="file" onChange={e => setFile(URL.createObjectURL(e.target.files[0]))}/>
+                  <Input id="image" type="file" onChange={e => setFile(URL.createObjectURL(e.target.files[0]))} />
                 </div>
               </div>
               <div className="grid gap-2">
@@ -107,7 +124,7 @@ export function CardDesign() {
               <div className="grid gap-2">
                 <Label htmlFor="title">Card Title</Label>
                 <Input id="title" type="text" placeholder="Enter card title"
-                onInput={x => setName(x.target.value)} />
+                  onInput={x => setName(x.target.value)} />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="description">Card Description</Label>
@@ -116,7 +133,7 @@ export function CardDesign() {
                   placeholder="Enter card description"
                   className="min-h-[100px]"
                   onChange={e => setDesc(e.target.value)}
-                   />
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
