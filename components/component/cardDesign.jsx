@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import * as html2canvas from 'html2canvas'
+import { extractColors } from 'extract-colors'
 
 import { useState } from "react"
 
@@ -14,6 +15,7 @@ export function CardDesign() {
   let [name, setName] = useState("Title")
   let [desc, setDesc] = useState("Here goes your description")
   let [file, setFile] = useState("/placeholder.svg");
+  let [bgColor, setBgColor] = useState("#f0f0f0")
 
 
   const handleDownloadImage = async () => {
@@ -25,9 +27,15 @@ export function CardDesign() {
     link.href = data;
     link.download = 'downloaded-image.jpg';
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+    let colors = await extractColors(file)
+    console.log(colors[0])
+    let imgR = colors[0].red - 15 > 0 ? colors[0].red - 15 : 0
+    let imgG = colors[0].green - 15 > 0 ? colors[0].green - 15 : 0
+    let imgB = colors[0].blue - 15 > 0 ? colors[0].blue - 15 : 0
+    setBgColor(rgbToHex(imgG, imgG, imgB))
   };
 
   return (
@@ -38,13 +46,16 @@ export function CardDesign() {
             <CardContent className="flex flex-col items-center justify-center h-full">
               <div
                 id="print"
-                className="bg-[#f0f0f0] rounded-lg shadow-lg p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center">
+                style={{
+                  backgroundColor: bgColor,
+                }}
+                className={`rounded-lg p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center`}>
                 <img
                   src={file}
                   alt="Card Image"
                   width={250}
                   height={250}
-                  className="rounded-md mb-4" />
+                  className="rounded-md mb-4 object-contain" />
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2 h-8">{name}</div>
                   <p className="text-muted-foreground h-8">{desc}</p>
@@ -78,7 +89,7 @@ export function CardDesign() {
                     <SelectItem value="500x700">500x700</SelectItem>
                   </SelectContent>
                 </Select>
-              <Button onClick={handleDownloadImage}>Export</Button>
+                <Button onClick={handleDownloadImage}>Export</Button>
               </div>
             </CardFooter>
           </Card>
@@ -216,4 +227,14 @@ function ShieldIcon(props) {
         d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
     </svg>)
   );
+}
+
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
