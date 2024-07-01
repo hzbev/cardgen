@@ -30,12 +30,14 @@ export function CardDesign() {
     // document.body.appendChild(link);
     // link.click();
     // document.body.removeChild(link);
+
+
     let colors = await extractColors(file)
     console.log(colors[0])
     let imgR = colors[0].red - 15 > 0 ? colors[0].red - 15 : 0
     let imgG = colors[0].green - 15 > 0 ? colors[0].green - 15 : 0
     let imgB = colors[0].blue - 15 > 0 ? colors[0].blue - 15 : 0
-    setBgColor(rgbToHex(imgG, imgG, imgB))
+    setBgColor(rgbToHex(imgR, imgG, imgB))
   };
 
   return (
