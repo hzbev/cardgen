@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import * as html2canvas from 'html2canvas'
+import domtoimage from 'dom-to-image';
 import { extractColors } from 'extract-colors'
-
+import { ColorPicker } from "./colorPicker"
 import { useState } from "react"
 
 export function CardDesign() {
@@ -19,17 +20,17 @@ export function CardDesign() {
 
 
   const handleDownloadImage = async () => {
-    const element = document.getElementById('print'),
-      canvas = await html2canvas(element),
-      data = canvas.toDataURL('image/jpg'),
-      link = document.createElement('a');
+    domtoimage.toPng(document.getElementById('print'), { quality: 100 })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'my-image-name.png';
+        link.href = dataUrl;
+        link.click();
+        document.body.removeChild(link);
+      });
 
-    link.href = data;
-    link.download = 'downloaded-image.jpg';
 
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
+
 
 
     let colors = await extractColors(file)
@@ -38,6 +39,7 @@ export function CardDesign() {
     let imgG = colors[0].green - 15 > 0 ? colors[0].green - 15 : 0
     let imgB = colors[0].blue - 15 > 0 ? colors[0].blue - 15 : 0
     setBgColor(rgbToHex(imgR, imgG, imgB))
+
   };
 
   return (
@@ -50,14 +52,17 @@ export function CardDesign() {
                 id="print"
                 style={{
                   backgroundColor: bgColor,
+                  // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
                 }}
-                className={`rounded-lg p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center`}>
-                <img
-                  src={file}
-                  alt="Card Image"
-                  width={250}
-                  height={250}
-                  className="rounded-md mb-4 object-contain" />
+                className={`p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center bg-blend-overlay border-4`}>
+                <div className="block">
+                  <img
+                    src={file}
+                    alt="Card Image"
+                    width={250}
+                    height={250}
+                    className="mb-4 object-cover min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px] outline " />
+                </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2 h-8">{name}</div>
                   <p className="text-muted-foreground h-8">{desc}</p>
@@ -111,6 +116,7 @@ export function CardDesign() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="background">Card Background</Label>
+                <ColorPicker color={bgColor} setColor={setBgColor} />
                 <RadioGroup id="background" defaultValue="classic">
                   <div className="flex items-center gap-4">
                     <Label
