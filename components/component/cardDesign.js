@@ -11,6 +11,7 @@ import domtoimage from 'dom-to-image';
 import { extractColors } from 'extract-colors'
 import { ColorPicker } from "./colorPicker"
 import { useState } from "react"
+import { RenderCardImage } from "./renderCardImage"
 
 export function CardDesign() {
   let [name, setName] = useState("Title")
@@ -55,14 +56,7 @@ export function CardDesign() {
                   // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
                 }}
                 className={`p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center bg-blend-overlay border-4`}>
-                <div className="block">
-                  <img
-                    src={file}
-                    alt="Card Image"
-                    width={250}
-                    height={250}
-                    className="mb-4 object-cover min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px] outline " />
-                </div>
+                  <RenderCardImage image={file} />
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2 h-8">{name}</div>
                   <p className="text-muted-foreground h-8">{desc}</p>

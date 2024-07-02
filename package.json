@@ -26,6 +26,7 @@
     "react": "^18",
     "react-colorful": "^5.6.1",
     "react-dom": "^18",
+    "react-zoom-pan-pinch": "^3.6.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-eye-dropper": "^1.6.1"
