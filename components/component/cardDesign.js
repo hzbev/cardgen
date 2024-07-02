@@ -6,9 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
-import * as html2canvas from 'html2canvas'
 import domtoimage from 'dom-to-image';
-import { extractColors } from 'extract-colors'
 import { ColorPicker } from "./colorPicker"
 import { useState } from "react"
 import { RenderCardImage } from "./renderCardImage"
@@ -27,7 +25,7 @@ export function CardDesign() {
         link.download = 'my-image-name.png';
         link.href = dataUrl;
         link.click();
-        document.body.removeChild(link);
+        // document.body.removeChild(link);/
       });
   };
 
@@ -43,25 +41,11 @@ export function CardDesign() {
                   backgroundColor: bgColor,
                   // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
                 }}
-                className={`p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center bg-blend-overlay border-4`}>
+                className={`p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center bg-blend-overlay border-4 border-black`}>
                   <RenderCardImage image={file} />
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2 h-8">{name}</div>
                   <p className="text-muted-foreground h-8">{desc}</p>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    <div className="flex items-center gap-1">
-                      <HeartIcon className="w-4 h-4 fill-red-500" />
-                      <span>120</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BoltIcon className="w-4 h-4 fill-yellow-500" />
-                      <span>90</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ShieldIcon className="w-4 h-4 fill-blue-500" />
-                      <span>80</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </CardContent>
