@@ -41,7 +41,7 @@ export function CardDesign() {
                   backgroundColor: bgColor,
                   // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
                 }}
-                className={`p-6 w-full max-w-[300px] h-[420px] flex flex-col items-center justify-center bg-blend-overlay border-4 border-black`}>
+                className={`pt-6 pb-6 w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay border-4 border-black`}>
                   <RenderCardImage image={file} />
                 <div className="text-center">
                   <div className="text-2xl font-bold mb-2 h-8">{name}</div>

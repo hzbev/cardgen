@@ -9,7 +9,7 @@ import {
 
 export function RenderCardImage({image}) {
   return (
-      <div className="m-4 outline min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px]">
+      <div className="mb-4 outline min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]">
         <TransformWrapper
           initialScale={1}
           smooth={false}
@@ -19,10 +19,10 @@ export function RenderCardImage({image}) {
           {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
             <>
               <TransformComponent>
-                <div className="object-cover min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px]">
-                  <img src={image}
-                    width={250}
-                    height={250}
+                <div className="object-cover min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                    width={300}
+                    height={300}
                   />
                 </div>
               </TransformComponent>
