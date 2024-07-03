@@ -20,7 +20,7 @@ export function RenderCardImage({image}) {
             <>
               <TransformComponent>
                 <div className="object-cover min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]">
-                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                  <img src={image}
                     width={300}
                     height={300}
                   />
