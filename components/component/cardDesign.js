@@ -18,12 +18,16 @@ import { CardPreset } from "./cardPreset"
 export function CardDesign() {
   let [name, setName] = useState("Title")
   let [desc, setDesc] = useState("Here goes your description")
-  let [file, setFile] = useState("data:,");
+  let [file, setFile] = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=");
   let [bgColor, setBgColor] = useState("rgba(255, 255, 255, 1)")
   let [borderColor, setBorderColor] = useState("#f0f0f0")
   let [tmpBorder, tmpsetBorderColor] = useState("#f0f0f0")
   let [photoBorder, setPhotoBored] = useState(true)
   let [overlayBehind, setOverlayBehind] = useState(true)
+  let [borderIndex, setBorderIndex] = useState("1")
+  let [presetIndex, setPresetIndex] = useState("1")
+
+
 
 
 
@@ -72,8 +76,8 @@ export function CardDesign() {
 
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative`}>
-                <CardBorder index="2" tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index="2" />
+                <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} />
               </div>
             </CardContent>
 
@@ -99,18 +103,26 @@ export function CardDesign() {
                 <ColorPickerr color={borderColor} setColor={handleBorderColor} />
                 <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[45%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
                 <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[45%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
-                <Select
-                label="Favorite Animal"
-                placeholder="Select an animal">
-                  <SelectTrigger className="w-[160px]">
-                    <SelectValue placeholder="Select a fruit" />
+                
+                <Label htmlFor="border">Card Style</Label>
+                <Select onValueChange={setPresetIndex} value="1">
+                  <SelectTrigger id="border" className="w-[160px]">
+                    <SelectValue placeholder="Select Style" />
+                  </SelectTrigger>
+                  <SelectContent >
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Label htmlFor="border">Border</Label>
+                <Select onValueChange={setBorderIndex} value="1">
+                  <SelectTrigger id="border" className="w-[160px]">
+                    <SelectValue placeholder="Select border" />
                   </SelectTrigger>
                   <SelectContent>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
                   </SelectContent>
                 </Select>
                 {/* <RadioGroup id="background" defaultValue="classic">
