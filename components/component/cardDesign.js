@@ -79,7 +79,7 @@ export function CardDesign() {
                       <defs>
                         {/* {parse(toReact(cssGradient2SVG(borderColor)).join("\n"))} */}
                         <linearGradient id="g1" x1={tmpBorder.x1} y1={tmpBorder.y1} x2={tmpBorder.x2} y2={tmpBorder.y2}>
-                          {tmpBorder.stops.map((x) => <stop offset={x.offset} stop-color={x.color} />)}
+                          {tmpBorder.stops.map((x) => <stop key={`${x.offset}x`} offset={x.offset} stop-color={x.color} />)}
                         </linearGradient>
                       </defs>
                     </svg>
