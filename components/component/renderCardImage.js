@@ -7,9 +7,11 @@ import {
   TransformComponent,
 } from "react-zoom-pan-pinch";
 
-export function RenderCardImage({image, showBorder}) {
+export function RenderCardImage({image, showBorder, wid, hei, mb}) {
   return (
-      <div className={`mb-4 ${showBorder ? "outline" : ""} min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]`}>
+      <div
+      style={{outlineStyle: showBorder ? "solid" : "none", marginBottom: mb}}
+      >
         <TransformWrapper
           initialScale={1}
           smooth={false}
@@ -19,10 +21,13 @@ export function RenderCardImage({image, showBorder}) {
           {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
             <>
               <TransformComponent>
-                <div className="object-cover min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]">
-                  <img src={image}
-                    width={300}
-                    height={300}
+                <div
+                 className="object-contain">
+                  <img 
+                  style={{ width: wid, height: hei, objectFit: "contain"}}
+                  src={image}
+                    width={wid}
+                    height={hei}
                   />
                 </div>
               </TransformComponent>
