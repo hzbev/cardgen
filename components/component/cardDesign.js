@@ -105,7 +105,7 @@ export function CardDesign() {
                 <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[45%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
                 
                 <Label htmlFor="border">Card Style</Label>
-                <Select onValueChange={setPresetIndex} value="1">
+                <Select onValueChange={setPresetIndex}>
                   <SelectTrigger id="border" className="w-[160px]">
                     <SelectValue placeholder="Select Style" />
                   </SelectTrigger>
@@ -116,7 +116,7 @@ export function CardDesign() {
                 </Select>
                 
                 <Label htmlFor="border">Border</Label>
-                <Select onValueChange={setBorderIndex} value="1">
+                <Select onValueChange={setBorderIndex}>
                   <SelectTrigger id="border" className="w-[160px]">
                     <SelectValue placeholder="Select border" />
                   </SelectTrigger>
