@@ -7,9 +7,9 @@ import {
   TransformComponent,
 } from "react-zoom-pan-pinch";
 
-export function RenderCardImage({image}) {
+export function RenderCardImage({image, showBorder}) {
   return (
-      <div className="mb-4 outline min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]">
+      <div className={`mb-4 ${showBorder ? "outline" : ""} min-h-[300px] min-w-[300px] max-h-[300px] max-w-[300px]`}>
         <TransformWrapper
           initialScale={1}
           smooth={false}

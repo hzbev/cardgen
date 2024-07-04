@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
-import domtoimage from 'dom-to-image';
 import { ColorPickerr } from "./colorPicker"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { RenderCardImage } from "./renderCardImage"
 import grad2svg from 'svg-gradient'
 import { toPng, toJpeg, toBlob, toPixelData, toSvg, toCanvas } from 'html-to-image';
@@ -22,59 +21,38 @@ export function CardDesign() {
   let [bgColor, setBgColor] = useState("rgba(255, 255, 255, 1)")
   let [borderColor, setBorderColor] = useState("#f0f0f0")
   let [tmpBorder, tmpsetBorderColor] = useState("#f0f0f0")
+  let [photoBorder, setPhotoBored] = useState(true)
+
 
 
   const handleBorderColor = (x) => {
-    console.log("set ", x)
     if (!x.includes("gradient")) tmpsetBorderColor({})
     setBorderColor(x)
-
-    tmpsetBorderColor(parseLinearGradient(grad2svg(x)))
-    console.log("sesss ", tmpBorder)
-
+    if (x.includes("gradient")) tmpsetBorderColor(parseLinearGradient(grad2svg(x)))
   }
 
 
 
   const handleDownloadImage = async () => {
-    toSvg(document.getElementById('print'), { quality: 100 })
-      .then(function (dataUrl) {
-        console.log(dataUrl)
+    toPng(document.getElementById('print'), { quality: 100 })
+      .then(function (toBlob) {
 
-      //   let svgg = tmpBorder?.angle
-      //     ?
-      //     <svg className="absolute" width="361" height="492" viewBox="-2 -2 363 494" fill="none" xmlns="http://www.w3.org/2000/svg">
-      //       <path fill-rule="evenodd" clip-rule="evenodd"
-      //         d="M0 488H357V0H0V488ZM349 480H8V459.5H8.48854C13.5135 459.5 17.7708 457.533 17.7708 450.884V377.649C17.7708 371 13.5135 369.033 8.48854 369.033H8V8H349V368.05H348.511C343.486 368.05 339.229 370.017 339.229 376.666V449.901C339.229 456.55 343.486 458.517 348.511 458.517H349V480Z"
-      //         fill="url(#g1)" />
-      //       <defs>
-      //         {/* {parse(toReact(cssGradient2SVG(borderColor)).join("\n"))} */}
-      //         <linearGradient id="g1" x1={tmpBorder.x1} y1={tmpBorder.y1} x2={tmpBorder.x2} y2={tmpBorder.y2}>
-      //           {tmpBorder.stops.map((x) => <stop offset={x.offset} stop-color={x.color} />)}
-      //         </linearGradient>
-      //       </defs>
-      //     </svg>
-      //     :
-      //     <svg className="absolute" width="361" height="492" viewBox="-2 -2 363 494" fill="none" xmlns="http://www.w3.org/2000/svg">
-      //       <path fill-rule="evenodd" clip-rule="evenodd" d="M0 490H359V0H0V490ZM350.955 481.967H8.04482V461.383H8.53609C13.5892 461.383 17.8703 459.408 17.8703 452.732V379.197C17.8703 372.521 13.5892 370.546 8.53609 370.546H8.04482V8.03279H350.955V369.558H350.464C345.411 369.558 341.13 371.533 341.13 378.21V451.745C341.13 458.421 345.411 460.396 350.464 460.396H350.955V481.967Z" fill={borderColor} stroke="black" stroke-width="2" />
-      //     </svg>
-
-      //   let aaa = `       <svg className="absolute" width="361" height="492" viewBox="-2 -2 363 494" fill="none" xmlns="http://www.w3.org/2000/svg">
-      //   <path fill-rule="evenodd" clip-rule="evenodd" d="M0 490H359V0H0V490ZM350.955 481.967H8.04482V461.383H8.53609C13.5892 461.383 17.8703 459.408 17.8703 452.732V379.197C17.8703 372.521 13.5892 370.546 8.53609 370.546H8.04482V8.03279H350.955V369.558H350.464C345.411 369.558 341.13 371.533 341.13 378.21V451.745C341.13 458.421 345.411 460.396 350.464 460.396H350.955V481.967Z" fill={${borderColor}} stroke="black" stroke-width="2" />
-      // </svg>`
-
-      //   const image = new Image();
-      //   let tt = dataUrl.getContext("2d")
-      //   image.src = `data:image/svg+xml;base64,${btoa(svgg)}`;
-      //   tt.drawImage(image, 0, 0)
-        document.body.appendChild(dataUrl);
-      //   document.body.appendChild(image);
-
-        // var link = document.createElement('a');
-        // link.download = 'my-image-name.png';
-        // link.href = dataUrl;
-        // link.click();
-        // // document.body.removeChild(link);/
+        fetch("http://localhost:3000/api/test", {
+          method: "POST",
+          body: JSON.stringify({
+            "borderColor": borderColor,
+            "tmpBorder": tmpBorder,
+            "imgBlob": toBlob
+          }),
+          redirect: "follow"
+        }).then(response => response.blob())
+          .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "image.png";
+            link.click();
+          });
       });
   };
 
@@ -90,13 +68,13 @@ export function CardDesign() {
                   // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
 
                 }}
-                className={`pt-6 pb-6 w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay`}>
+                className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay`}>
                 {
                   tmpBorder?.angle
                     ?
-                    <svg className="absolute" width="361" height="492" viewBox="-2 -2 363 494" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="absolute" width="357" height="488" viewBox="0 0 357 488" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M0 488H357V0H0V488ZM349 480H8V459.5H8.48854C13.5135 459.5 17.7708 457.533 17.7708 450.884V377.649C17.7708 371 13.5135 369.033 8.48854 369.033H8V8H349V368.05H348.511C343.486 368.05 339.229 370.017 339.229 376.666V449.901C339.229 456.55 343.486 458.517 348.511 458.517H349V480Z"
+                        d="M0 480C0 484.418 3.58172 488 8 488H349C353.418 488 357 484.418 357 480V7.99999C357 3.58171 353.418 0 349 0H8C3.58172 0 0 3.58172 0 8V480ZM349 472C349 476.418 345.418 480 341 480H16C11.5817 480 8 476.418 8 472V459.989C8 459.719 8.21873 459.5 8.48854 459.5V459.5C13.5135 459.5 17.7708 457.533 17.7708 450.884V377.649C17.7708 371 13.5135 369.033 8.48854 369.033V369.033C8.21873 369.033 8 368.815 8 368.545V16C8 11.5817 11.5817 8 16 8H341C345.418 8 349 11.5817 349 16V367.561C349 367.831 348.781 368.05 348.511 368.05V368.05C343.486 368.05 339.229 370.017 339.229 376.666V449.901C339.229 456.55 343.486 458.517 348.511 458.517V458.517C348.781 458.517 349 458.735 349 459.005V472Z"
                         fill="url(#g1)" />
                       <defs>
                         {/* {parse(toReact(cssGradient2SVG(borderColor)).join("\n"))} */}
@@ -106,39 +84,21 @@ export function CardDesign() {
                       </defs>
                     </svg>
                     :
-                    <svg className="absolute" width="361" height="492" viewBox="-2 -2 363 494" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 490H359V0H0V490ZM350.955 481.967H8.04482V461.383H8.53609C13.5892 461.383 17.8703 459.408 17.8703 452.732V379.197C17.8703 372.521 13.5892 370.546 8.53609 370.546H8.04482V8.03279H350.955V369.558H350.464C345.411 369.558 341.13 371.533 341.13 378.21V451.745C341.13 458.421 345.411 460.396 350.464 460.396H350.955V481.967Z" fill={borderColor} stroke="black" stroke-width="2" />
+                    <svg className="absolute" width="357" height="488" viewBox="0 0 357 488" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M349 487H8C4.13401 487 1 483.866 1 480V8C1 4.13401 4.13401 1 8 1H349C352.866 1 356 4.134 356 7.99999V480C356 483.866 352.866 487 349 487ZM16 481H341C345.971 481 350 476.971 350 472V459.005C350 458.183 349.334 457.517 348.511 457.517C346.102 457.517 344.043 457.041 342.602 455.914C341.208 454.825 340.229 452.996 340.229 449.901V376.666C340.229 373.57 341.208 371.742 342.602 370.652C344.043 369.526 346.102 369.05 348.511 369.05C349.334 369.05 350 368.384 350 367.561V16C350 11.0294 345.971 7 341 7H16C11.0294 7 7 11.0294 7 16V368.545C7 369.367 7.66646 370.033 8.48854 370.033C10.8979 370.033 12.9573 370.509 14.3982 371.636C15.7923 372.725 16.7708 374.554 16.7708 377.649V450.884C16.7708 453.98 15.7923 455.808 14.3982 456.898C12.9573 458.024 10.8979 458.5 8.48854 458.5C7.66644 458.5 7 459.166 7 459.989V472C7 476.971 11.0294 481 16 481Z" fill={borderColor} stroke="black" stroke-width="2" />
                     </svg>
-
-
                 }
 
 
-
-                <RenderCardImage image={file} />
-                <div className="text-center">
-                  <div className="text-2xl font-bold mb-2 h-8">{name}</div>
-                  <p className="text-muted-foreground h-8">{desc}</p>
+                <RenderCardImage image={file} showBorder={photoBorder} />
+                <div className="text-center text-wrap w-[87%] h-[28%]">
+                  <div className="text-2xl font-bold h-8 truncate">{name}</div>
+                  <p className="h-[80%] text-wrap truncate w-[95%] max-h-[75%]">{desc}</p>
                 </div>
                 {/* </div> */}
               </div>
             </CardContent>
-            <CardFooter>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="export-size">Export Size:</Label>
-                <Select id="export-size">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="300x420">300x420</SelectItem>
-                    <SelectItem value="400x560">400x560</SelectItem>
-                    <SelectItem value="500x700">500x700</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button onClick={handleDownloadImage}>Export</Button>
-              </div>
-            </CardFooter>
+
           </Card>
         </div >
         <div>
@@ -156,11 +116,12 @@ export function CardDesign() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="background">Card Background</Label>
-                <ColorPickerr color={bgColor} setColor={setBgColor} />
+                <ColorPickerr color={bgColor} setColor={setBgColor} hideButtons={true} />
                 <Label htmlFor="background">Card Border</Label>
                 <ColorPickerr color={borderColor} setColor={handleBorderColor} />
+                <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[45%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
 
-                <RadioGroup id="background" defaultValue="classic">
+                {/* <RadioGroup id="background" defaultValue="classic">
                   <div className="flex items-center gap-4">
                     <Label
                       htmlFor="background-classic"
@@ -181,11 +142,11 @@ export function CardDesign() {
                       Holographic
                     </Label>
                   </div>
-                </RadioGroup>
+                </RadioGroup> */}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="title">Card Title</Label>
-                <Input id="title" type="text" placeholder="Enter card title"
+                <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
                   onInput={x => setName(x.target.value)} />
               </div>
               <div className="grid gap-2">
@@ -197,7 +158,7 @@ export function CardDesign() {
                   onChange={e => setDesc(e.target.value)}
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-3">
+              {/* <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
                   <Label htmlFor="hp">HP</Label>
                   <Input id="hp" type="number" placeholder="Enter HP" />
@@ -210,8 +171,8 @@ export function CardDesign() {
                   <Label htmlFor="defense">Defense</Label>
                   <Input id="defense" type="number" placeholder="Enter Defense" />
                 </div>
-              </div>
-              <Button className="justify-self-end">Save Card</Button>
+              </div> */}
+              <Button onClick={handleDownloadImage} className="justify-self-end">Save Card</Button>
             </CardContent>
           </Card>
         </div>
