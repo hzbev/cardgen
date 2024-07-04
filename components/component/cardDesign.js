@@ -37,7 +37,7 @@ export function CardDesign() {
     toPng(document.getElementById('print'), { quality: 100 })
       .then(function (toBlob) {
 
-        fetch("http://localhost:3000/api/test", {
+        fetch("/api/generateimage", {
           method: "POST",
           body: JSON.stringify({
             "borderColor": borderColor,

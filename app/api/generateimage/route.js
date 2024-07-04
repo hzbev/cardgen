@@ -7,9 +7,7 @@ import { parse, stringify } from 'svgson'
 
 
 export async function POST(req, res) {
-  const imagePath = resolve('./app/api/test/combined.png');
   const data = await req.json();
-  // console.log(data);
   if (data.borderColor.includes("gradient")) {
     let orig = await parse(readFileSync("./public/border1-gradient.svg", "utf-8"))
     for (let i of orig.children) {
@@ -44,9 +42,8 @@ export async function POST(req, res) {
       let sharpData = await sharp(tmpData)
         .withMetadata({ density: 150 })
         .resize(744, 1017)
-        .sharpen({ sigma: .2 })
+        .sharpen({ sigma: .5 })
         .toBuffer()
-
 
       const response = new NextResponse(sharpData);
 
