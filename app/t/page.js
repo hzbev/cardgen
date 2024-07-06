@@ -1,35 +1,69 @@
 "use client"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { useState } from "react"
-
-import { RenderCardImage } from "../../components/component/renderCardImage"
-import { useEffect, useRef } from 'react';
+import * as React from "react";
+import Moveable from "react-moveable";
 
 export default function Heheheh() {
+  const targetRef = React.useRef(null);
 
-  const imageRef = useRef(null);
-
-  useEffect(() => {
-    fetch('/api/test', {
-      method: "POST",
-      body: {
-        "imageBlob": "hihihi",
-        "svgConfig": "hehehe"
-      },
-      redirect: "follow"
-    })
-      .then(response => response.blob())
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        imageRef.current.src = url;
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "image.png";
-        link.click();
-      });
-  }, []);
-
-  return <img ref={imageRef} alt="Example" />;
+  return (
+    <div className="root">
+      <div
+        className="container"
+        style={{
+          width: "400px",
+          height: "500px",
+          // border: "1px solid #ccc",
+          backgroundColor: "grey",
+          transform: "translate(100px, 0px)"
+        }}
+      >
+        <p
+          className="target"
+          id="target"
+          style={{
+            wordBreak: "break-word",
+            lineHeight: 1.2,
+            transformOrigin: "center",
+            transform: `rotate(12deg)`
+            // fontSize: "24px"
+          }}
+          ref={targetRef}
+        >
+          When resizing the text, the element flickers and jumps from place to
+          place when it hits a bound. I've included a codesanbox. Is there
+          something I can do to stop this? This seems to be related to rotation
+          as it doesn't happen if the element is not rotated.{" "}
+        </p>
+        <Moveable
+          target={targetRef}
+          draggable={true}
+          edgeDraggable={false}
+          resizable={true}
+          rotatable
+          keepRatio={false}
+          snappable={true}
+          // transformOrigin="center"
+          bounds={{ left: 0, top: 0, right: 0, bottom: 0, position: "css" }}
+          onResizeStart={(e) => {
+            e.setMin([75, 0]);
+            e.setOrigin(["50%", "50%"]);
+          }}
+          onDrag={(e) => {
+            e.target.style.transform = e.transform;
+          }}
+          onResize={(e) => {
+            e.target.style.width = `${e.width}px`;
+            // e.target.style.height = `${e.height}px`;
+            e.target.style.transform = e.drag.transform;
+          }}
+          onRotate={(e) => {
+            e.target.style.transform = e.transform;
+          }}
+          padding={{ left: 10, right: 10, top: 10, bottom: 10 }}
+        />
+      </div>
+    </div>
+  );
 }
 
 

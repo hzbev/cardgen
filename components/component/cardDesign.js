@@ -5,6 +5,8 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import * as Collapsible from '@radix-ui/react-collapsible';
+
 import { Textarea } from "@/components/ui/textarea"
 import { ColorPickerr } from "./colorPicker"
 import { useState, useRef } from "react"
@@ -26,10 +28,23 @@ export function CardDesign() {
   let [overlayBehind, setOverlayBehind] = useState(true)
   let [borderIndex, setBorderIndex] = useState("1")
   let [presetIndex, setPresetIndex] = useState("1")
+  let [selectedText, setSelectedText] = useState("none")
+  let [selectedSize, setSelectedSize] = useState(0)
+
+  let [customTextObj, setCustomTextObj] = useState({})
+
+  let [tmpselectedText, settmpSelectedText] = useState("")
+  let [tmpselectedSize, settmpSelectedSize] = useState(25)
+  let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
 
 
 
-
+  const handleNewTex = (x) => {
+    setSelectedText(x)
+    settmpSelectedText(customTextObj[x]?.text || "")
+    settmpSelectedSize(customTextObj[x]?.size || 0)
+    settmpSelectedColor(customTextObj[x]?.color || "#000000")
+  }
 
 
   const handleBorderColor = (x) => {
@@ -63,6 +78,36 @@ export function CardDesign() {
       });
   };
 
+  const addCustomText = async (e) => {
+    let total = Object.keys(customTextObj).length
+    let tmpObj = {...customTextObj}
+    tmpObj[total + 1] = { text: "example", color: "", size: 25, rotation: "0" }
+    // setSelectedText(total+1)
+    setCustomTextObj(tmpObj)
+  }
+
+  const editElementText = async (e) => {
+    let tmpObj = {...customTextObj}
+    tmpObj[selectedText].text = e.target.value
+    setCustomTextObj(tmpObj)
+    settmpSelectedText(e.target.value)
+  }
+
+  const editElementSize = async (e) => {
+    let tmpObj = {...customTextObj}
+    if (e.target.value > 100 || e.target.value < 1) return
+    tmpObj[selectedText].size = e.target.value
+    setCustomTextObj(tmpObj)
+    settmpSelectedSize(e.target.value)
+  }
+
+  const editElementColor = async (e) => {
+    let tmpObj = {...customTextObj}
+    tmpObj[selectedText].color = e
+    setCustomTextObj(tmpObj)
+    settmpSelectedColor(e)
+  }
+
   return (
     (<div className="max-w-4xl mx-auto p-6 sm:p-8">
       <div className="grid md:grid-cols-2 gap-8">
@@ -77,7 +122,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} />
               </div>
             </CardContent>
 
@@ -103,7 +148,7 @@ export function CardDesign() {
                 <ColorPickerr color={borderColor} setColor={handleBorderColor} />
                 <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[45%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
                 <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[45%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
-                
+
                 <Label htmlFor="border">Card Style</Label>
                 <Select onValueChange={setPresetIndex}>
                   <SelectTrigger id="border" className="w-[160px]">
@@ -112,9 +157,11 @@ export function CardDesign() {
                   <SelectContent >
                     <SelectItem value="1">1</SelectItem>
                     <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+
                   </SelectContent>
                 </Select>
-                
+
                 <Label htmlFor="border">Border</Label>
                 <Select onValueChange={setBorderIndex}>
                   <SelectTrigger id="border" className="w-[160px]">
@@ -148,20 +195,50 @@ export function CardDesign() {
                   </div>
                 </RadioGroup> */}
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="title">Card Title</Label>
-                <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
-                  onInput={x => setName(x.target.value)} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Card Description</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Enter card description"
-                  className="min-h-[100px]"
-                  onChange={e => setDesc(e.target.value)}
-                />
-              </div>
+              {presetIndex !== "3" ?
+                <>
+                  <div className="grid gap-2">
+                    <Label htmlFor="title">Card Title</Label>
+                    <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
+                      onInput={x => setName(x.target.value)} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="description">Card Description</Label>
+                    <Textarea
+                      id="description"
+                      placeholder="Enter card description"
+                      className="min-h-[100px]"
+                      onChange={e => setDesc(e.target.value)}
+                    />
+                  </div>
+                </>
+                :
+                <div className="grid gap-2">
+                  <Button onClick={addCustomText} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
+
+                  <Label htmlFor="addedText">Active Text Layer</Label>
+                  <Select value={selectedText} onValueChange={(x) => handleNewTex(x)}>
+                    <SelectTrigger id="addedText" className="w-[160px]">
+                      <SelectValue placeholder="None" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <DropdownList customTextObj={customTextObj}></DropdownList>
+
+                    </SelectContent>
+                  </Select>
+                  <Label htmlFor="edit1">Layer {selectedText}'s text</Label>
+                  <Input maxLength={25} id="edit1" value={tmpselectedText} defaultValue="example" type="text" placeholder="Enter card title"
+                    onChange={editElementText} />
+
+                  <Label htmlFor="edit2">Layer {selectedText}'s size</Label>
+                  <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
+                    onChange={editElementSize} />
+
+                <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
+                  
+                </div>
+              }
               {/* <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
                   <Label htmlFor="hp">HP</Label>
@@ -187,34 +264,11 @@ export function CardDesign() {
 
 
 
-function toReact(orig) {
-  let tmp = orig.split(/(?=<)/)
-  tmp[0] = [tmp[0].slice(0, 16), 'id="g1" ', tmp[0].slice(16)].join('')
 
-  for (let i = 0; i < tmp.length; i++) {
-    if (tmp[i].includes("<linearGradient")) continue;
-    tmp[i] = tmp[i].replace(/style="([^"]*stop-color:\s*rgba\([^;]+\));?[^"]*"/g, (match, styleContent) => {
-      const stopColorMatch = styleContent.match(/stop-color:\s*(rgba\([^;]+\))/);
-      if (stopColorMatch) {
-        const stopColorValue = stopColorMatch[1];
-        return `stop-color="${stopColorValue}"`;
-      }
-      return match;
-    })
-    if (tmp[i].includes("/>")) tmp[i] = tmp[i].replace("/>", "/></stop>")
-  }
+const DropdownList = ({ customTextObj }) => (
+  Object.keys(customTextObj).map((x) => <SelectItem key={x} value={x}>{x}</SelectItem>)
+)
 
-  tmp[1] = tmp[1]?.replace(/\s*offset="(\d+)%"/g, (match, p1) => {
-    if (parseInt(p1, 10) < 10) {
-      return '';
-    }
-    return match; // Keep the offset attribute
-  });
-
-  console.log(tmp)
-
-  return tmp
-}
 
 function parseLinearGradient(svgString) {
   // Use regex to extract the attributes and stops
