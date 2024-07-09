@@ -36,6 +36,8 @@ export function CardDesign() {
   let [tmpselectedText, settmpSelectedText] = useState("")
   let [tmpselectedSize, settmpSelectedSize] = useState(25)
   let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
+  let [tmpselectedfontSize, settmpSelectedfontSize] = useState("normal")
+
 
 
 
@@ -44,6 +46,19 @@ export function CardDesign() {
     settmpSelectedText(customTextObj[x]?.text || "")
     settmpSelectedSize(customTextObj[x]?.size || 0)
     settmpSelectedColor(customTextObj[x]?.color || "#000000")
+  }
+
+  const handleNewFontWeight = (x) => {
+    setSelectedText(x)
+    tmpselectedfontSize(customTextObj[x]?.weight || "normal")
+  }
+
+  const editElementWeight = async (e) => {
+    let tmpObj = {...customTextObj}
+    tmpObj[selectedText].weight = e
+    setCustomTextObj(tmpObj)
+    console.log(customTextObj)
+    // settmpSelectedText(e.target.value)
   }
 
 
@@ -81,7 +96,7 @@ export function CardDesign() {
   const addCustomText = async (e) => {
     let total = Object.keys(customTextObj).length
     let tmpObj = {...customTextObj}
-    tmpObj[total + 1] = { text: "example", color: "", size: 25, rotation: "0" }
+    tmpObj[total + 1] = { text: "example", color:  "#000000", size: 25, rotation: "0", weight: "normal" }
     // setSelectedText(total+1)
     setCustomTextObj(tmpObj)
   }
@@ -107,6 +122,8 @@ export function CardDesign() {
     setCustomTextObj(tmpObj)
     settmpSelectedColor(e)
   }
+
+
 
   return (
     (<div className="max-w-4xl mx-auto p-6 sm:p-8">
@@ -150,8 +167,8 @@ export function CardDesign() {
                 <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[45%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
 
                 <Label htmlFor="border">Card Style</Label>
-                <Select onValueChange={setPresetIndex}>
-                  <SelectTrigger id="border" className="w-[160px]">
+                <Select defaultValue="1" onValueChange={setPresetIndex}>
+                  <SelectTrigger id="style" className="w-[160px]">
                     <SelectValue placeholder="Select Style" />
                   </SelectTrigger>
                   <SelectContent >
@@ -159,17 +176,21 @@ export function CardDesign() {
                     <SelectItem value="2">2</SelectItem>
                     <SelectItem value="3">3</SelectItem>
 
+                    <SelectItem value="custom">Custom</SelectItem>
+
                   </SelectContent>
                 </Select>
 
                 <Label htmlFor="border">Border</Label>
-                <Select onValueChange={setBorderIndex}>
+                <Select defaultValue="1" onValueChange={setBorderIndex}>
                   <SelectTrigger id="border" className="w-[160px]">
                     <SelectValue placeholder="Select border" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">1</SelectItem>
                     <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+
                   </SelectContent>
                 </Select>
                 {/* <RadioGroup id="background" defaultValue="classic">
@@ -195,7 +216,7 @@ export function CardDesign() {
                   </div>
                 </RadioGroup> */}
               </div>
-              {presetIndex !== "3" ?
+              {presetIndex !== "custom" ?
                 <>
                   <div className="grid gap-2">
                     <Label htmlFor="title">Card Title</Label>
@@ -237,6 +258,17 @@ export function CardDesign() {
 
                 <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
                   
+                <Select onValueChange={editElementWeight}>
+                    <SelectTrigger id="selectedBold" className="w-[160px]">
+                      <SelectValue placeholder="Normal" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="bold">Bold</SelectItem>
+                      <SelectItem value="900">Bolder</SelectItem>
+                    </SelectContent>
+                  </Select>
+
                 </div>
               }
               {/* <div className="grid gap-4 sm:grid-cols-3">

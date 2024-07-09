@@ -1,6 +1,6 @@
 export function CardBorder({ index, tmpBorder, borderColor, disableMoving }) {
   return (
-    <svg className="absolute" style={{zIndex: disableMoving ? 10 : 0}} width="357" height="488" viewBox="0 0 357 488" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className="absolute" style={{ zIndex: disableMoving ? 10 : 0 }} width="357" height="488" viewBox="0 0 357 488" fill="none" xmlns="http://www.w3.org/2000/svg">
       {index === "1" &&
         <>
           {tmpBorder?.angle
@@ -38,6 +38,26 @@ export function CardBorder({ index, tmpBorder, borderColor, disableMoving }) {
             </>
             :
             <path fill-rule="evenodd" clip-rule="evenodd" d="M7 480V481H8H55.5H55.9142L56.2071 480.707L81.9142 455H275.086L300.793 480.707L301.086 481H301.5H349H350V480V8V7H349H8H7V8V480ZM356 1V487H1V1H356Z" fill={borderColor} stroke="black" stroke-width="2" />
+          }
+        </>
+      }
+
+      {index === "3" &&
+        <>
+          {tmpBorder?.angle
+            ?
+            <>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M0 488H357V0H0V488ZM8 8H349V480H8V8Z"
+                fill="url(#g1)" />
+              <defs>
+                <linearGradient id="g1" x1={tmpBorder.x1} y1={tmpBorder.y1} x2={tmpBorder.x2} y2={tmpBorder.y2}>
+                  {tmpBorder.stops.map((x) => <stop key={`${x.offset}x`} offset={x.offset} stop-color={x.color} />)}
+                </linearGradient>
+              </defs>
+            </>
+            :
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 488H357V0H0V488ZM8 8H349V480H8V8Z" fill={borderColor} />
           }
         </>
       }
