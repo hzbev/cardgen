@@ -41,7 +41,7 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                         <div className="text-2xl font-bold truncate pb-1">{name}</div>
                     </div>
                     <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="75px" />
-                    <div className="w-[87%] max-h-[126px] absolute top-[345px] p-[3px]">
+                    <div className="w-[87%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white">
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[95%]">{desc}</p>
                     </div>
                 </>
