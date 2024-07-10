@@ -59,6 +59,7 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                     {Object.keys(customText).map((x, i) => (
                         <div
                             ref={el => itemsRef.current[i] = el}
+                            key={i}
                             className={`w-max h-max text-center target-${x}`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
                             {customText[x].text}
                         </div>

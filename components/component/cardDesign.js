@@ -248,11 +248,11 @@ export function CardDesign() {
 
                     </SelectContent>
                   </Select>
-                  <Label htmlFor="edit1">Layer {selectedText}'s text</Label>
+                  <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
                   <Input maxLength={25} id="edit1" value={tmpselectedText} defaultValue="example" type="text" placeholder="Enter card title"
                     onChange={editElementText} />
 
-                  <Label htmlFor="edit2">Layer {selectedText}'s size</Label>
+                  <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
                   <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
                     onChange={editElementSize} />
 
