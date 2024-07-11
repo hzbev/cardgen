@@ -37,7 +37,7 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
 
             {index == "3" &&
                 <>
-                    <div className="text-center text-wrap w-[87%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.5), 0px 3px 3px 1px rgba(84,84,84,0.5), -3px 0px 3px 1px rgba(252,252,252,0.5), 0px -3px 3px 1px rgba(252,252,252,0.5)", borderRadius: "2px"}}>
+                    <div className="text-center text-wrap w-[87%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px"}}>
                         <div className="text-2xl font-bold truncate pb-1">{name}</div>
                     </div>
                     <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="75px" />

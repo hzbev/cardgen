@@ -29,7 +29,8 @@ export function CardDesign() {
   let [borderIndex, setBorderIndex] = useState("1")
   let [presetIndex, setPresetIndex] = useState("1")
   let [selectedText, setSelectedText] = useState("none")
-  let [selectedSize, setSelectedSize] = useState(0)
+  let [selectedTexture, setSelectedTexture] = useState('0')
+  let [selectedBlend, setSelectedBlend] = useState('overlay')
 
   let [customTextObj, setCustomTextObj] = useState({})
 
@@ -54,7 +55,7 @@ export function CardDesign() {
   }
 
   const editElementWeight = async (e) => {
-    let tmpObj = {...customTextObj}
+    let tmpObj = { ...customTextObj }
     tmpObj[selectedText].weight = e
     setCustomTextObj(tmpObj)
     console.log(customTextObj)
@@ -95,21 +96,21 @@ export function CardDesign() {
 
   const addCustomText = async (e) => {
     let total = Object.keys(customTextObj).length
-    let tmpObj = {...customTextObj}
-    tmpObj[total + 1] = { text: "example", color:  "#000000", size: 25, rotation: "0", weight: "normal" }
+    let tmpObj = { ...customTextObj }
+    tmpObj[total + 1] = { text: "example", color: "#000000", size: 25, rotation: "0", weight: "normal" }
     // setSelectedText(total+1)
     setCustomTextObj(tmpObj)
   }
 
   const editElementText = async (e) => {
-    let tmpObj = {...customTextObj}
+    let tmpObj = { ...customTextObj }
     tmpObj[selectedText].text = e.target.value
     setCustomTextObj(tmpObj)
     settmpSelectedText(e.target.value)
   }
 
   const editElementSize = async (e) => {
-    let tmpObj = {...customTextObj}
+    let tmpObj = { ...customTextObj }
     if (e.target.value > 100 || e.target.value < 1) return
     tmpObj[selectedText].size = e.target.value
     setCustomTextObj(tmpObj)
@@ -117,7 +118,7 @@ export function CardDesign() {
   }
 
   const editElementColor = async (e) => {
-    let tmpObj = {...customTextObj}
+    let tmpObj = { ...customTextObj }
     tmpObj[selectedText].color = e
     setCustomTextObj(tmpObj)
     settmpSelectedColor(e)
@@ -134,10 +135,11 @@ export function CardDesign() {
               <div id="print"
                 style={{
                   backgroundColor: bgColor,
-                  // backgroundImage: 'url("https://cdn.discordapp.com/attachments/831862551956422666/1257451520723783754/photo-ground-texture-pattern.jpg?ex=6684747c&is=668322fc&hm=8881a2c65e19d682886a165f657f9a573c07068d68912c27bff7c411e9e65cf8&")'
-
+                  backgroundImage: `url("/${selectedTexture}.jpg")`,
+                  backgroundBlendMode: selectedBlend,
+                  backgroundSize: "cover"
                 }}
-                className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative`}>
+                className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
                 <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} />
               </div>
@@ -159,40 +161,111 @@ export function CardDesign() {
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="background">Card Background</Label>
-                <ColorPickerr color={bgColor} setColor={setBgColor} hideButtons={true} />
-                <Label htmlFor="background">Card Border</Label>
-                <ColorPickerr color={borderColor} setColor={handleBorderColor} />
-                <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[45%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
-                <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[45%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
 
-                <Label htmlFor="border">Card Style</Label>
-                <Select defaultValue="1" onValueChange={setPresetIndex}>
-                  <SelectTrigger id="style" className="w-[160px]">
-                    <SelectValue placeholder="Select Style" />
-                  </SelectTrigger>
-                  <SelectContent >
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
 
-                    <SelectItem value="custom">Custom</SelectItem>
 
-                  </SelectContent>
-                </Select>
 
-                <Label htmlFor="border">Border</Label>
-                <Select defaultValue="1" onValueChange={setBorderIndex}>
-                  <SelectTrigger id="border" className="w-[160px]">
-                    <SelectValue placeholder="Select border" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
 
-                  </SelectContent>
-                </Select>
+
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="background">Background</Label>
+                    <ColorPickerr id="background" color={bgColor} setColor={setBgColor} hideButtons={true} />
+
+                  </div>
+                  <div>
+                    <Label htmlFor="bgColor">Border</Label>
+                    <ColorPickerr id="bgColor" color={borderColor} setColor={handleBorderColor} />
+                  </div>
+                  <div>
+                    <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
+                  </div>
+                  <div>
+                    <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[90%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
+
+                  </div>
+
+                  <div>
+                    <Label htmlFor="style">Card Style</Label>
+                    <Select defaultValue="1" onValueChange={setPresetIndex}>
+                      <SelectTrigger id="style" className="w-[160px]">
+                        <SelectValue placeholder="Select Style" />
+                      </SelectTrigger>
+                      <SelectContent >
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+
+                        <SelectItem value="custom">Custom</SelectItem>
+
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="border">Border</Label>
+                    <Select defaultValue="1" onValueChange={setBorderIndex}>
+                      <SelectTrigger id="border" className="w-[160px]">
+                        <SelectValue placeholder="Select border" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="texture">Card Texture</Label>
+                    <Select defaultValue="0" onValueChange={setSelectedTexture}>
+                      <SelectTrigger id="texture" className="w-[160px]">
+                        <SelectValue placeholder="Select Texture" />
+                      </SelectTrigger>
+                      <SelectContent >
+                        <SelectItem value="0">None</SelectItem>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+
+                  <div>
+                    <Label htmlFor="textureMode">Texture Mode</Label>
+                    <Select defaultValue="overlay" onValueChange={setSelectedBlend}>
+                      <SelectTrigger id="textureMode" className="w-[160px]">
+                        <SelectValue placeholder="Texture mode" />
+                      </SelectTrigger>
+                      <SelectContent >
+                        {/* <SelectItem value="multiply">multiply</SelectItem> */}
+                        <SelectItem value="screen">screen</SelectItem>
+                        <SelectItem value="overlay">overlay</SelectItem>
+                        <SelectItem value="darken">darken</SelectItem>
+                        {/* <SelectItem value="lighten">lighten</SelectItem> */}
+                        {/* <SelectItem value="color-dodge">color-dodge</SelectItem> */}
+                        {/* <SelectItem value="color-burn">color-burn</SelectItem> */}
+                        <SelectItem value="hard-light">hard-light</SelectItem>
+                        <SelectItem value="soft-light">soft-light</SelectItem>
+                        {/* <SelectItem value="difference">difference</SelectItem> */}
+                        {/* <SelectItem value="exclusion">exclusion</SelectItem> */}
+                        {/* <SelectItem value="hue">hue</SelectItem> */}
+                        {/* <SelectItem value="saturation">saturation</SelectItem> */}
+                        {/* <SelectItem value="color">color</SelectItem> */}
+                        <SelectItem value="luminosity">luminosity</SelectItem>
+                        {/* <SelectItem value="plus-darker">plus-darker</SelectItem> */}
+                        {/* <SelectItem value="plus-lighter">plus-lighter</SelectItem> */}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+
                 {/* <RadioGroup id="background" defaultValue="classic">
                   <div className="flex items-center gap-4">
                     <Label
@@ -256,9 +329,9 @@ export function CardDesign() {
                   <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
                     onChange={editElementSize} />
 
-                <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
-                  
-                <Select onValueChange={editElementWeight}>
+                  <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
+
+                  <Select onValueChange={editElementWeight}>
                     <SelectTrigger id="selectedBold" className="w-[160px]">
                       <SelectValue placeholder="Normal" />
                     </SelectTrigger>
