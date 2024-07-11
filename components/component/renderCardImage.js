@@ -7,10 +7,10 @@ import {
   TransformComponent,
 } from "react-zoom-pan-pinch";
 
-export function RenderCardImage({ image, showBorder, wid, hei, mb }) {
+export function RenderCardImage({ image, showBorder, wid, hei, mb, borderPX }) {
   return (
     <div
-      style={{ outlineStyle: image.length > 10 && showBorder ? "solid" : "none", marginBottom: mb }}
+      style={{ outlineStyle: image.length > 10 && showBorder ? `solid` : "none", marginBottom: mb, outlineWidth: `${borderPX}px` }}
     >
       <TransformWrapper
         initialScale={1}
@@ -39,11 +39,11 @@ export function RenderCardImage({ image, showBorder, wid, hei, mb }) {
 }
 
 
-export function RenderCardImageAbsolute({ image, showBorder, wid, hei, mb, topPos }) {
+export function RenderCardImageAbsolute({ image, showBorder, wid, hei, mb, topPos, borderPX }) {
   return (
     <div
     className="absolute"
-      style={{ outlineStyle: image.length > 10 && showBorder ? "solid" : "none", marginBottom: mb, top: topPos }}
+      style={{ outlineStyle: image.length > 10 && showBorder ? `solid` : "none", marginBottom: mb, top: topPos, outlineWidth: `${borderPX}px` }}
     >
       <TransformWrapper
         initialScale={1}

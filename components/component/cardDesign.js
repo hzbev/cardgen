@@ -36,6 +36,8 @@ export function CardDesign() {
 
   let [tmpselectedText, settmpSelectedText] = useState("")
   let [tmpselectedSize, settmpSelectedSize] = useState(25)
+  let [tmpPhotoBorderSize, settmpPhotoBorderSize] = useState(3)
+
   let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
   let [tmpselectedfontSize, settmpSelectedfontSize] = useState("normal")
 
@@ -141,7 +143,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} />
               </div>
             </CardContent>
 
@@ -262,6 +264,12 @@ export function CardDesign() {
                         {/* <SelectItem value="plus-lighter">plus-lighter</SelectItem> */}
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="edit44">Photo Border Width</Label>
+                    <Input maxLength={2} id="edit44" value={tmpPhotoBorderSize} type="number" min="1" max="15"
+                      onChange={(e) => e.target.value > 15 ? null : settmpPhotoBorderSize(e.target.value)} />
                   </div>
                 </div>
 
