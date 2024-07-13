@@ -10,7 +10,7 @@ import {
 export function RenderCardImage({ image, showBorder, wid, hei, mb, borderPX }) {
   return (
     <div
-      style={{ outlineStyle: image.length > 10 && showBorder ? `solid` : "none", marginBottom: mb, outlineWidth: `${borderPX}px` }}
+      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, outlineWidth: `${borderPX}px` }}
     >
       <TransformWrapper
         initialScale={1}
@@ -43,7 +43,7 @@ export function RenderCardImageAbsolute({ image, showBorder, wid, hei, mb, topPo
   return (
     <div
     className="absolute"
-      style={{ outlineStyle: image.length > 10 && showBorder ? `solid` : "none", marginBottom: mb, top: topPos, outlineWidth: `${borderPX}px` }}
+      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, top: topPos, outlineWidth: `${borderPX}px` }}
     >
       <TransformWrapper
         initialScale={1}

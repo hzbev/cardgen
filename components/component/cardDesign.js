@@ -37,6 +37,8 @@ export function CardDesign() {
   let [tmpselectedText, settmpSelectedText] = useState("")
   let [tmpselectedSize, settmpSelectedSize] = useState(25)
   let [tmpPhotoBorderSize, settmpPhotoBorderSize] = useState(3)
+  let [tmpDescBorderSize, settmpDescBorderSize] = useState(0)
+
 
   let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
   let [tmpselectedfontSize, settmpSelectedfontSize] = useState("normal")
@@ -143,7 +145,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} />
               </div>
             </CardContent>
 
@@ -181,7 +183,7 @@ export function CardDesign() {
                     <ColorPickerr id="bgColor" color={borderColor} setColor={handleBorderColor} />
                   </div>
                   <div>
-                    <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button>
+                    {/* <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button> */}
                   </div>
                   <div>
                     <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[90%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
@@ -199,7 +201,9 @@ export function CardDesign() {
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
 
-                        <SelectItem value="custom">Custom</SelectItem>
+                        <SelectItem value="custom1">Custom - Style 1</SelectItem>
+                        <SelectItem value="custom2">Custom - Style 2</SelectItem>
+
 
                       </SelectContent>
                     </Select>
@@ -268,9 +272,16 @@ export function CardDesign() {
 
                   <div>
                     <Label htmlFor="edit44">Photo Border Width</Label>
-                    <Input maxLength={2} id="edit44" value={tmpPhotoBorderSize} type="number" min="1" max="15"
-                      onChange={(e) => e.target.value > 15 ? null : settmpPhotoBorderSize(e.target.value)} />
+                    <Input maxLength={2} id="edit44" value={tmpPhotoBorderSize} type="number" min="0" max="10"
+                      onChange={(e) => e.target.value > 10 ? null : settmpPhotoBorderSize(e.target.value)} />
                   </div>
+
+                  <div>
+                    <Label htmlFor="edit444">Description Border Width</Label>
+                    <Input maxLength={1} id="edit444" value={tmpDescBorderSize} type="number" min="0" max="5"
+                      onChange={(e) => e.target.value > 5 ? null : settmpDescBorderSize(e.target.value)} />
+                  </div>
+
                 </div>
 
 
@@ -297,7 +308,7 @@ export function CardDesign() {
                   </div>
                 </RadioGroup> */}
               </div>
-              {presetIndex !== "custom" ?
+              {(presetIndex !== "custom1" && presetIndex !== "custom2") ?
                 <>
                   <div className="grid gap-2">
                     <Label htmlFor="title">Card Title</Label>
@@ -329,26 +340,32 @@ export function CardDesign() {
 
                     </SelectContent>
                   </Select>
-                  <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
-                  <Input maxLength={25} id="edit1" value={tmpselectedText} defaultValue="example" type="text" placeholder="Enter card title"
-                    onChange={editElementText} />
+                  {
+                    selectedText !== "none" &&
+                    <>
+                      <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
+                      <Input maxLength={25} id="edit1" value={tmpselectedText} defaultValue="example" type="text" placeholder="Enter card title"
+                        onChange={editElementText} />
 
-                  <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
-                  <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
-                    onChange={editElementSize} />
+                      <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
+                      <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
+                        onChange={editElementSize} />
 
-                  <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
+                      <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
 
-                  <Select onValueChange={editElementWeight}>
-                    <SelectTrigger id="selectedBold" className="w-[160px]">
-                      <SelectValue placeholder="Normal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="normal">Normal</SelectItem>
-                      <SelectItem value="bold">Bold</SelectItem>
-                      <SelectItem value="900">Bolder</SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <Select onValueChange={editElementWeight}>
+                        <SelectTrigger id="selectedBold" className="w-[160px]">
+                          <SelectValue placeholder="Normal" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="normal">Normal</SelectItem>
+                          <SelectItem value="bold">Bold</SelectItem>
+                          <SelectItem value="900">Bolder</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                    </>
+                  }
 
                 </div>
               }
