@@ -28,6 +28,8 @@ export function CardDesign() {
   let [overlayBehind, setOverlayBehind] = useState(true)
   let [borderIndex, setBorderIndex] = useState("1")
   let [presetIndex, setPresetIndex] = useState("1")
+  let [lockCenter, setlockCenter] = useState(false)
+
   let [selectedText, setSelectedText] = useState("none")
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
@@ -105,6 +107,9 @@ export function CardDesign() {
     // setSelectedText(total+1)
     setCustomTextObj(tmpObj)
   }
+  const addCustomText111 = async (e) => {
+console.log()
+  }
 
   const editElementText = async (e) => {
     let tmpObj = { ...customTextObj }
@@ -145,7 +150,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} lockCenter={lockCenter} />
               </div>
             </CardContent>
 
@@ -328,6 +333,7 @@ export function CardDesign() {
                 :
                 <div className="grid gap-2">
                   <Button onClick={addCustomText} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
+                  <Button onClick={(e) => setlockCenter(!lockCenter)} className="justify-self-start w-[45%] rounded-sm ">{lockCenter ? "Unlock": "Lock"} center</Button>
 
                   <Label htmlFor="addedText">Active Text Layer</Label>
                   <Select value={selectedText} onValueChange={(x) => handleNewTex(x)}>

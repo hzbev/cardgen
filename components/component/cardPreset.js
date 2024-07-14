@@ -5,13 +5,16 @@ import Moveable from "react-moveable";
 import { useRef, useEffect } from "react";
 
 
-export function CardPreset({ uploadedImage, photoBorder, name, desc, index, customText, activeText, disableMoving, borderPX, descPX }) {
+export function CardPreset({ uploadedImage, photoBorder, name, desc, index, customText, activeText, disableMoving, borderPX, descPX, lockCenter }) {
     const itemsRef = useRef([]);
+    const movableRef = useRef();
+
     // you can access the elements with itemsRef.current[n]
-    console.log(customText)
     useEffect(() => {
+        // console.log(movableRef.current.request("draggable", { x: 0, y:0 }, true))
+        console.log(movableRef.current)
         //    itemsRef.current = itemsRef.current.slice(0, activeText);
-        console.log(itemsRef.current)
+        console.log(itemsRef.current[0])
     }, [activeText]);
     return (
         <>
@@ -66,13 +69,14 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                         <div
                             ref={el => itemsRef.current[i] = el}
                             key={i}
-                            className={`w-max text-center target-${x}`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
+                            className={`w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
                             {customText[x].text}
                         </div>
                     ))}
 
                     <Moveable
                         // className="w-full h-full"
+                        ref={movableRef}
                         snappable={true}
                         target={itemsRef.current[activeText - 1]}
                         // container={document.querySelector(`#print`)}
@@ -86,9 +90,7 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                         /* draggable */
                         draggable={true}
                         throttleDrag={0}
-                        onDragStart={({ target, clientX, clientY }) => {
-                            console.log("onDragStart", target);
-                        }}
+
                         onDrag={({
                             target,
                             beforeDelta, beforeDist,
@@ -98,16 +100,9 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                             transform,
                             clientX, clientY,
                         }) => {
-                            console.log("onDrag left, top", left, top);
-                            // target!.style.left = `${left}px`;
-                            // target!.style.top = `${top}px`;
-                            console.log("onDrag translate", dist);
-                            target.style.transform = transform;
+                            if (lockCenter) target.style.transform = `translate(0px${transform.slice(transform.indexOf(","))}`;
+                            else target.style.transform = transform;
                         }}
-                        onDragEnd={({ target, isDrag, clientX, clientY }) => {
-                            console.log("onDragEnd", target, isDrag);
-                        }}
-
                         keepRatio={false}
 
 
@@ -116,38 +111,25 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                         /* Only one of resizable, scalable, warpable can be used. */
                         scalable={true}
                         throttleScale={0}
-                        onScaleStart={({ target, clientX, clientY }) => {
-                            console.log("onScaleStart", target);
-                        }}
+
                         onScale={({
                             target, scale, dist, delta, transform,
                             clientX, clientY,
                         }) => {
-                            console.log("onScale scale", scale);
                             target.style.transform = transform;
-                        }}
-                        onScaleEnd={({ target, isDrag, clientX, clientY }) => {
-                            console.log("onScaleEnd", target, isDrag);
                         }}
 
                         /* rotatable */
                         rotatable={true}
 
                         throttleRotate={5}
-                        onRotateStart={({ target, clientX, clientY }) => {
-                            console.log("onRotateStart", target);
-                        }}
                         onRotate={({
                             target,
                             delta, dist,
                             transform,
                             clientX, clientY,
                         }) => {
-                            console.log("onRotate", dist);
                             target.style.transform = transform;
-                        }}
-                        onRotateEnd={({ target, isDrag, clientX, clientY }) => {
-                            console.log("onRotateEnd", target, isDrag);
                         }}
 
                     />
