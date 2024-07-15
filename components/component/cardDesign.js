@@ -19,6 +19,11 @@ import { CardPreset } from "./cardPreset"
 
 export function CardDesign() {
   let changeTitle = useAppStore((state) => state.changeTitle)
+  let changeTitleWeight = useAppStore((state) => state.changeTitleWeight)
+  let changeTitleColor = useAppStore((state) => state.changeTitleColor)
+  let changeDescColor = useAppStore((state) => state.changeDescColor)
+
+
   let changeType = useAppStore((state) => state.changeType)
   let changeDesc = useAppStore((state) => state.changeDesc)
   let changeImage = useAppStore((state) => state.changeImage)
@@ -41,11 +46,12 @@ export function CardDesign() {
   let centerLocked = useAppStore((state) => state.centerLocked)
   let selectedText = useAppStore((state) => state.selectedText)
   let customData = useAppStore((state) => state.customData)
+  let titleColor = useAppStore((state) => state.titleColor)
+  let descColor = useAppStore((state) => state.descColor)
+
 
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
-
-  let [titleWeight, setTitleWeight] = useState("normal") //later
 
   const handleDownloadImage = async () => {
     toPng(document.getElementById('print'), { quality: 100 })
@@ -73,8 +79,8 @@ export function CardDesign() {
 
 
   return (
-    (<div className="max-w-4xl mx-auto p-6 sm:p-8">
-      <div className="grid md:grid-cols-2 gap-8">
+    (<div className="max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-8 h-screen">
         <div>
           <Card className="h-full">
             <CardContent className="flex flex-col items-center justify-center h-full">
@@ -94,7 +100,7 @@ export function CardDesign() {
           </Card>
         </div >
         <div>
-          <Card className="h-full">
+          <Card className="h-screen overflow-auto">
             <CardHeader>
               <CardTitle>Customize Your Card</CardTitle>
               <CardDescription>Upload an image, select a background, and add text</CardDescription>
@@ -108,7 +114,7 @@ export function CardDesign() {
               </div>
               <div className="grid gap-2">
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-4 gap-3">
                   <div>
                     <Label htmlFor="background">Background</Label>
                     <ColorPickerr id="background" color={bgColor} setColor={changeBgColor} hideButtons={true} />
@@ -118,6 +124,17 @@ export function CardDesign() {
                     <Label htmlFor="bgColor">Border</Label>
                     <ColorPickerr id="bgColor" color={borderColor} setColor={changeBorderColor} />
                   </div>
+                  <div>
+                    <Label htmlFor="titleColor">Title</Label>
+                    <ColorPickerr id="titleColor" color={titleColor} setColor={changeTitleColor} hideButtons={true} />
+                  </div>
+                  <div>
+                    <Label htmlFor="descColor">Description</Label>
+                    <ColorPickerr id="descColor" color={descColor} setColor={changeDescColor} hideButtons={true} />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     {/* <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button> */}
                   </div>
@@ -217,6 +234,35 @@ export function CardDesign() {
                     <Input maxLength={1} id="edit444" defaultValue="0" type="number" min="0" max="5"
                       onChange={(e) => e.target.value > 5 ? null : changDescBorderSize(e.target.value)} />
                   </div>
+                  {(layoutIndex !== "custom1" && layoutIndex !== "custom2") &&
+                    <>
+                      <div className="">
+                        <Label htmlFor="title">Card Title</Label>
+                        <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
+                          onInput={x => changeTitle(x.target.value)} />
+                      </div>
+                      <div>
+                        <Label htmlFor="selectedBold">Title Weight</Label>
+                        <Select onValueChange={changeTitleWeight}>
+                          <SelectTrigger id="selectedBold" className="w-[160px]">
+                            <SelectValue placeholder="Bold" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="bold">Bold</SelectItem>
+                            <SelectItem value="900">Bolder</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {layoutIndex == "3" &&
+                        <div className="">
+                          <Label htmlFor="type">Card Type</Label>
+                          <Input maxLength={25} id="type" type="text" defaultValue="[ TRAP CARD ]" placeholder="Enter card type"
+                            onInput={x => changeType(x.target.value)} />
+                        </div>
+                      }
+                    </>
+                  }
 
                 </div>
 
@@ -246,28 +292,8 @@ export function CardDesign() {
               </div>
               {(layoutIndex !== "custom1" && layoutIndex !== "custom2") ?
                 <>
-                  <div className="grid gap-2">
-                    <Label htmlFor="title">Card Title</Label>
-                    <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
-                      onInput={x => changeTitle(x.target.value)} />
-                  </div>
-                  <Select onValueChange={setTitleWeight}>
-                    <SelectTrigger id="selectedBold" className="w-[160px]">
-                      <SelectValue placeholder="Normal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="normal">Normal</SelectItem>
-                      <SelectItem value="bold">Bold</SelectItem>
-                      <SelectItem value="900">Bolder</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {layoutIndex == "3" &&
-                    <div className="grid gap-2">
-                      <Label htmlFor="type">Card Type</Label>
-                      <Input maxLength={25} id="type" type="text" defaultValue="[ TRAP CARD ]" placeholder="Enter card type"
-                        onInput={x => changeType(x.target.value)} />
-                    </div>
-                  }
+
+
                   <div className="grid gap-2">
                     <Label htmlFor="description">Card Description</Label>
                     <Textarea

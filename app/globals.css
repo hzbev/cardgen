@@ -103,3 +103,16 @@
         height: 0;
     }
 }
+
+
+::-webkit-scrollbar {
+    width: 5px;
+    transition: opacity 0.25s linear;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: rgb(78, 78, 78);
+    border-radius: 5px;
+    height: 20%;
+}
+ 

@@ -4,6 +4,9 @@ import { produce } from 'immer'
 
 export const useAppStore = create((set) => ({
     title: "Title",
+    titleWeight: "bold",
+    titleColor: "rgba(0, 0, 0, 1)",
+    descColor: "rgba(100, 100, 100, 1)",
     typeCard: "[ TRAP CARD ]",
     desc: "Here goes your description",
     imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=",
@@ -22,6 +25,9 @@ export const useAppStore = create((set) => ({
 
 
     changeTitle: (x) => set((state) => ({ title: x })),
+    changeTitleWeight: (x) => set((state) => ({ titleWeight: x })),
+    changeTitleColor: (x) => set((state) => ({ titleColor: x })),
+    changeDescColor: (x) => set((state) => ({ descColor: x })),
     changeType: (x) => set((state) => ({ typeCard: x })),
     changeDesc: (x) => set((state) => ({ desc: x })),
     changeImage: (x) => set((state) => ({ imageData: x })),
@@ -47,16 +53,4 @@ export const useAppStore = create((set) => ({
     editCustomData: (key, value) => set(produce((state) => {
         state.customData[state.selectedText][key] = value
     }))
-
-
-
-
-
-
-
-
-
-
-    //   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-    //   removeAllBears: () => set({ bears: 0 }),
 }))
