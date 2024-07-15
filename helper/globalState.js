@@ -11,6 +11,8 @@ export const useAppStore = create((set) => ({
     borderColor: "#f0f0f0",
     enableImageMoving: true,
     photoBorderSize: 3,
+    descBorderSize: 0,
+
 
     selectedTexture: "0",
     selectedBlendMode: "overlay",
@@ -32,6 +34,8 @@ export const useAppStore = create((set) => ({
     changeBorderColor: (x) => set((state) => ({ borderColor: x })),
     setMovingImage: () => set((state) => ({ enableImageMoving: !state.enableImageMoving })),
     changePhotoBorderSize: (x) => set((state) => ({ photoBorderSize: x })),
+    changDescBorderSize: (x) => set((state) => ({ descBorderSize: x })),
+
 
     changeSelectedTexture: (x) => set((state) => ({ selectedTexture: x })),
     changeSelectedBlendMode: (x) => set((state) => ({ selectedBlendMode: x })),

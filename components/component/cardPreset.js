@@ -6,14 +6,15 @@ import { useRef, useEffect } from "react";
 import { useAppStore } from "@/helper/globalState";
 
 
-export function CardPreset({ customText, activeText, descPX }) {
-    console.log(customText)
+export function CardPreset({ customText, activeText }) {
     let centerLocked = useAppStore((state) => state.centerLocked)
 
     let cardTitle = useAppStore((state) => state.title)
     let cardType = useAppStore((state) => state.typeCard)
     let cardDesc = useAppStore((state) => state.desc)
     let layoutIndex = useAppStore((state) => state.layoutIndex)
+    let descBorderSize = useAppStore((state) => state.descBorderSize)
+
 
     return (
         <>
@@ -22,7 +23,7 @@ export function CardPreset({ customText, activeText, descPX }) {
                     <RenderCardImage wid={300} hei={300} mb="16px" />
                     <div className="text-center text-wrap w-[90%] h-[28%]">
                         <div className="text-2xl font-bold h-8 truncate">{cardTitle}</div>
-                        <p className="h-[80%] text-wrap truncate max-h-[75%]" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>{cardDesc}</p>
+                        <p className="h-[80%] text-wrap truncate max-h-[75%]" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>{cardDesc}</p>
                     </div>
                 </>
             }
@@ -46,7 +47,7 @@ export function CardPreset({ customText, activeText, descPX }) {
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardType}</p>
                     </div>
                     <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="95px" />
-                    <div className="w-[90%] max-h-[100px] absolute top-[360px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
+                    <div className="w-[90%] max-h-[100px] absolute top-[360px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
                         <p className="h-[100%] max-h-[100px] text-wrap truncate w-[100%]">{cardDesc}</p>
                     </div>
                 </>
@@ -57,11 +58,11 @@ export function CardPreset({ customText, activeText, descPX }) {
                     <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
                         <div className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
                     </div>
-                    <div className="w-[90%] max-h-[126px] absolute top-[60px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
+                    <div className="w-[90%] max-h-[126px] absolute top-[60px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">[TRAP CARD]</p>
                     </div>
                     <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="75px" />
-                    <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
+                    <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardDesc}</p>
                     </div>
                 </>
