@@ -5,7 +5,7 @@ import Moveable from "react-moveable";
 import { useRef, useEffect } from "react";
 
 
-export function CardPreset({ uploadedImage, photoBorder, name, desc, index, customText, activeText, disableMoving, borderPX, descPX, lockCenter }) {
+export function CardPreset({ uploadedImage, photoBorder, name, desc, index, customText, activeText, disableMoving, borderPX, descPX, lockCenter, cardType }) {
     const itemsRef = useRef([]);
     const movableRef = useRef();
 
@@ -40,26 +40,43 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
 
             {index == "3" &&
                 <>
+                    <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-[15px]" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
+                        <div className="text-2xl font-bold truncate pb-1">{name}</div>
+                    </div>
+                    <div className="w-[250px] max-h-[126px] absolute top-[60px] p-[3px] text-end" style={{ fontWeight: "bold" }}>
+                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardType}</p>
+                    </div>
+                    <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="95px" borderPX={borderPX} />
+                    <div className="w-[90%] max-h-[100px] absolute top-[360px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
+                        <p className="h-[100%] max-h-[100px] text-wrap truncate w-[100%]">{desc}</p>
+                    </div>
+                </>
+            }
+
+            {/* {index == "3" &&
+                <>
                     <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
                         <div className="text-2xl font-bold truncate pb-1">{name}</div>
+                    </div>
+                    <div className="w-[90%] max-h-[126px] absolute top-[60px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
+                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">[TRAP CARD]</p>
                     </div>
                     <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="75px" borderPX={borderPX} />
                     <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{desc}</p>
                     </div>
                 </>
-            }
+            } */}
 
             {(index == "custom1" || index == "custom2") &&
                 <>
 
                     {index == "custom1" &&
-                        <RenderCardImage image={uploadedImage} showBorder={photoBorder} wid={300} hei={300} mb="0" borderPX={borderPX} />
+                        <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={300} hei={300} mb="16px" topPos="50px" borderPX={borderPX} />
                     }
                     {index == "custom2" &&
                         <div className="absolute">
                             <RenderCardImage image={uploadedImage} showBorder={photoBorder} wid={350} hei={480} mb="0" borderPX={borderPX} />
-
                         </div>
 
                     }
@@ -69,7 +86,7 @@ export function CardPreset({ uploadedImage, photoBorder, name, desc, index, cust
                         <div
                             ref={el => itemsRef.current[i] = el}
                             key={i}
-                            className={`w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
+                            className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
                             {customText[x].text}
                         </div>
                     ))}

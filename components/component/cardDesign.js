@@ -19,6 +19,9 @@ import { CardPreset } from "./cardPreset"
 
 export function CardDesign() {
   let [name, setName] = useState("Title")
+  let [type, setType] = useState("[ TRAP CARD ]")
+  let [titleWeight, setTitleWeight] = useState("normal")
+
   let [desc, setDesc] = useState("Here goes your description")
   let [file, setFile] = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=");
   let [bgColor, setBgColor] = useState("rgba(255, 255, 255, 1)")
@@ -108,7 +111,7 @@ export function CardDesign() {
     setCustomTextObj(tmpObj)
   }
   const addCustomText111 = async (e) => {
-console.log()
+    console.log()
   }
 
   const editElementText = async (e) => {
@@ -150,7 +153,7 @@ console.log()
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} lockCenter={lockCenter} />
+                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} lockCenter={lockCenter} cardType={type} />
               </div>
             </CardContent>
 
@@ -170,12 +173,6 @@ console.log()
                 </div>
               </div>
               <div className="grid gap-2">
-
-
-
-
-
-
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -320,6 +317,23 @@ console.log()
                     <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
                       onInput={x => setName(x.target.value)} />
                   </div>
+                  <Select onValueChange={setTitleWeight}>
+                    <SelectTrigger id="selectedBold" className="w-[160px]">
+                      <SelectValue placeholder="Normal" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="bold">Bold</SelectItem>
+                      <SelectItem value="900">Bolder</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {presetIndex == "3" &&
+                    <div className="grid gap-2">
+                      <Label htmlFor="type">Card Type</Label>
+                      <Input maxLength={25} id="type" type="text" defaultValue="[ TRAP CARD ]" placeholder="Enter card type"
+                        onInput={x => setType(x.target.value)} />
+                    </div>
+                  }
                   <div className="grid gap-2">
                     <Label htmlFor="description">Card Description</Label>
                     <Textarea
@@ -333,7 +347,7 @@ console.log()
                 :
                 <div className="grid gap-2">
                   <Button onClick={addCustomText} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
-                  <Button onClick={(e) => setlockCenter(!lockCenter)} className="justify-self-start w-[45%] rounded-sm ">{lockCenter ? "Unlock": "Lock"} center</Button>
+                  <Button onClick={(e) => setlockCenter(!lockCenter)} className="justify-self-start w-[45%] rounded-sm ">{lockCenter ? "Unlock" : "Lock"} center</Button>
 
                   <Label htmlFor="addedText">Active Text Layer</Label>
                   <Select value={selectedText} onValueChange={(x) => handleNewTex(x)}>
