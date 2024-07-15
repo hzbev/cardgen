@@ -3,156 +3,129 @@ import { RenderCardImage, RenderCardImageAbsolute } from "./renderCardImage"
 import Draggable from 'react-draggable'; // The default
 import Moveable from "react-moveable";
 import { useRef, useEffect } from "react";
+import { useAppStore } from "@/helper/globalState";
 
 
-export function CardPreset({ uploadedImage, photoBorder, name, desc, index, customText, activeText, disableMoving, borderPX, descPX, lockCenter, cardType }) {
-    const itemsRef = useRef([]);
-    const movableRef = useRef();
+export function CardPreset({ customText, activeText, descPX }) {
+    let cardTitle = useAppStore((state) => state.title)
+    let cardType = useAppStore((state) => state.typeCard)
+    let cardDesc = useAppStore((state) => state.desc)
+    let layoutIndex = useAppStore((state) => state.layoutIndex)
 
-    // you can access the elements with itemsRef.current[n]
-    useEffect(() => {
-        // console.log(movableRef.current.request("draggable", { x: 0, y:0 }, true))
-        console.log(movableRef.current)
-        //    itemsRef.current = itemsRef.current.slice(0, activeText);
-        console.log(itemsRef.current[0])
-    }, [activeText]);
     return (
         <>
-            {index == "1" &&
+            {layoutIndex == "1" &&
                 <>
-                    <RenderCardImage image={uploadedImage} showBorder={photoBorder} wid={300} hei={300} mb="16px" borderPX={borderPX} />
+                    <RenderCardImage wid={300} hei={300} mb="16px" />
                     <div className="text-center text-wrap w-[90%] h-[28%]">
-                        <div className="text-2xl font-bold h-8 truncate">{name}</div>
-                        <p className="h-[80%] text-wrap truncate max-h-[75%]" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>{desc}</p>
+                        <div className="text-2xl font-bold h-8 truncate">{cardTitle}</div>
+                        <p className="h-[80%] text-wrap truncate max-h-[75%]" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>{cardDesc}</p>
                     </div>
                 </>
             }
 
-            {index == "2" &&
+            {layoutIndex == "2" &&
                 <>
-                    <RenderCardImage image={uploadedImage} showBorder={photoBorder} wid={350} hei={480} mb="0" borderPX={borderPX} />
+                    <RenderCardImage wid={350} hei={480} mb="0" />
                     <div className="text-center text-wrap w-[90%] absolute z-30 mt-[450px]">
-                        <div className="text-2xl font-bold h-[100%] truncate">{name}</div>
-                        {/* <p className="h-[80%] text-wrap truncate w-[95%] max-h-[75%]">{desc}</p> */}
+                        <div className="text-2xl font-bold h-[100%] truncate">{cardTitle}</div>
+                        {/* <p className="h-[80%] text-wrap truncate w-[95%] max-h-[75%]">{cardDesc}</p> */}
                     </div>
                 </>
             }
 
-            {index == "3" &&
+            {layoutIndex == "3" &&
                 <>
                     <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-[15px]" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
-                        <div className="text-2xl font-bold truncate pb-1">{name}</div>
+                        <div className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
                     </div>
                     <div className="w-[250px] max-h-[126px] absolute top-[60px] p-[3px] text-end" style={{ fontWeight: "bold" }}>
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardType}</p>
                     </div>
-                    <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="95px" borderPX={borderPX} />
+                    <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="95px" />
                     <div className="w-[90%] max-h-[100px] absolute top-[360px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
-                        <p className="h-[100%] max-h-[100px] text-wrap truncate w-[100%]">{desc}</p>
+                        <p className="h-[100%] max-h-[100px] text-wrap truncate w-[100%]">{cardDesc}</p>
                     </div>
                 </>
             }
 
-            {/* {index == "3" &&
+            {/* {layoutIndex == "3" &&
                 <>
                     <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
-                        <div className="text-2xl font-bold truncate pb-1">{name}</div>
+                        <div className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
                     </div>
                     <div className="w-[90%] max-h-[126px] absolute top-[60px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
                         <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">[TRAP CARD]</p>
                     </div>
-                    <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={250} hei={250} mb="16px" topPos="75px" borderPX={borderPX} />
+                    <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="75px" />
                     <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descPX > 0 ? `solid` : "none", outlineWidth: `${descPX}px` }}>
-                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{desc}</p>
+                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardDesc}</p>
                     </div>
                 </>
             } */}
 
-            {(index == "custom1" || index == "custom2") &&
-                <>
-
-                    {index == "custom1" &&
-                        <RenderCardImageAbsolute image={uploadedImage} showBorder={photoBorder} wid={300} hei={300} mb="16px" topPos="50px" borderPX={borderPX} />
-                    }
-                    {index == "custom2" &&
-                        <div className="absolute">
-                            <RenderCardImage image={uploadedImage} showBorder={photoBorder} wid={350} hei={480} mb="0" borderPX={borderPX} />
-                        </div>
-
-                    }
-
-
-                    {Object.keys(customText).map((x, i) => (
-                        <div
-                            ref={el => itemsRef.current[i] = el}
-                            key={i}
-                            className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
-                            {customText[x].text}
-                        </div>
-                    ))}
-
-                    <Moveable
-                        // className="w-full h-full"
-                        ref={movableRef}
-                        snappable={true}
-                        target={itemsRef.current[activeText - 1]}
-                        // container={document.querySelector(`#print`)}
-                        bounds={{ top: 0, left: 0, bottom: 0, right: 0, position: "css" }}
-                        origin={true}
-                        edgeDraggable={false}
-
-                        /* Resize event edges */
-                        edge={true}
-
-                        /* draggable */
-                        draggable={true}
-                        throttleDrag={0}
-
-                        onDrag={({
-                            target,
-                            beforeDelta, beforeDist,
-                            left, top,
-                            right, bottom,
-                            delta, dist,
-                            transform,
-                            clientX, clientY,
-                        }) => {
-                            if (lockCenter) target.style.transform = `translate(0px${transform.slice(transform.indexOf(","))}`;
-                            else target.style.transform = transform;
-                        }}
-                        keepRatio={false}
-
-
-
-                        /* scalable */
-                        /* Only one of resizable, scalable, warpable can be used. */
-                        scalable={true}
-                        throttleScale={0}
-
-                        onScale={({
-                            target, scale, dist, delta, transform,
-                            clientX, clientY,
-                        }) => {
-                            target.style.transform = transform;
-                        }}
-
-                        /* rotatable */
-                        rotatable={true}
-
-                        throttleRotate={5}
-                        onRotate={({
-                            target,
-                            delta, dist,
-                            transform,
-                            clientX, clientY,
-                        }) => {
-                            target.style.transform = transform;
-                        }}
-
-                    />
-
-                </>
+            {(layoutIndex == "custom1" || layoutIndex == "custom2") &&
+                CustomLayout(layoutIndex, customText, activeText)
             }
         </>
     )
+}
+
+function CustomLayout(layoutIndex, customText, activeText) {
+    let centerLocked = useAppStore((state) => state.centerLocked)
+
+
+    return (<>
+
+        {layoutIndex == "custom1" &&
+            <RenderCardImageAbsolute wid={300} hei={300} mb="16px" topPos="50px" />}
+        {layoutIndex == "custom2" &&
+            <div className="absolute">
+                <RenderCardImage wid={350} hei={480} mb="0" />
+            </div>}
+
+
+        {Object.keys(customText).map((x, i) => (
+            <div
+                key={i}
+                className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
+                {customText[x].text}
+            </div>
+        ))}
+
+        <Moveable
+            snappable={true}
+            target={document.querySelector(`.target-${activeText}`)}
+
+            bounds={{ top: 0, left: 0, bottom: 0, right: 0, position: "css" }}
+            origin={true}
+            edgeDraggable={false}
+            edge={true}
+            draggable={true}
+            throttleDrag={0}
+            onDrag={({
+                target, transform,
+            }) => {
+                if (centerLocked)
+                    target.style.transform = `translate(0px${transform.slice(transform.indexOf(","))}`;
+                else
+                    target.style.transform = transform;
+            }}
+            keepRatio={false}
+            scalable={true}
+            throttleScale={0}
+            onScale={({
+                target, transform,
+            }) => {
+                target.style.transform = transform;
+            }}
+            rotatable={true}
+            throttleRotate={5}
+            onRotate={({
+                target, transform,
+            }) => {
+                target.style.transform = transform;
+            }} />
+
+    </>);
 }

@@ -6,49 +6,53 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import * as Collapsible from '@radix-ui/react-collapsible';
+import { useAppStore } from "@/helper/globalState"
 
 import { Textarea } from "@/components/ui/textarea"
 import { ColorPickerr } from "./colorPicker"
 import { useState, useRef } from "react"
-import { RenderCardImage } from "./renderCardImage"
-import grad2svg from 'svg-gradient'
-import { toPng, toJpeg, toBlob, toPixelData, toSvg, toCanvas } from 'html-to-image';
+import { toPng } from 'html-to-image';
 import { CardBorder } from "./cardBorder"
 import { CardPreset } from "./cardPreset"
 
 
 export function CardDesign() {
-  let [name, setName] = useState("Title")
-  let [type, setType] = useState("[ TRAP CARD ]")
-  let [titleWeight, setTitleWeight] = useState("normal")
+  let changeTitle = useAppStore((state) => state.changeTitle)
+  let changeType = useAppStore((state) => state.changeType)
+  let changeDesc = useAppStore((state) => state.changeDesc)
+  let changeImage = useAppStore((state) => state.changeImage)
+  let changLayoutIndex = useAppStore((state) => state.changeLayout)
+  let changeBorderIndex = useAppStore((state) => state.changeBorder)
+  let changeBgColor = useAppStore((state) => state.changeBgColor)
+  let changeBorderColor = useAppStore((state) => state.changeBorderColor)
+  let setMovingImage = useAppStore((state) => state.setMovingImage)
+  let changePhotoBorderSize = useAppStore((state) => state.changePhotoBorderSize)
+  let changeCenterLocked = useAppStore((state) => state.changeCenterLocked)
 
-  let [desc, setDesc] = useState("Here goes your description")
-  let [file, setFile] = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=");
-  let [bgColor, setBgColor] = useState("rgba(255, 255, 255, 1)")
-  let [borderColor, setBorderColor] = useState("#f0f0f0")
-  let [tmpBorder, tmpsetBorderColor] = useState("#f0f0f0")
-  let [photoBorder, setPhotoBored] = useState(true)
-  let [overlayBehind, setOverlayBehind] = useState(true)
-  let [borderIndex, setBorderIndex] = useState("1")
-  let [presetIndex, setPresetIndex] = useState("1")
-  let [lockCenter, setlockCenter] = useState(false)
+  // variables
+  let bgColor = useAppStore((state) => state.bgColor)
+  let borderColor = useAppStore((state) => state.borderColor)
+  let layoutIndex = useAppStore((state) => state.layoutIndex)
+  let enableImageMoving = useAppStore((state) => state.enableImageMoving)
+  let centerLocked = useAppStore((state) => state.centerLocked)
 
-  let [selectedText, setSelectedText] = useState("none")
+
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
 
-  let [customTextObj, setCustomTextObj] = useState({})
 
+
+  let [titleWeight, setTitleWeight] = useState("normal") //later
+
+
+  let [selectedText, setSelectedText] = useState("none")
+
+  let [customTextObj, setCustomTextObj] = useState({})
   let [tmpselectedText, settmpSelectedText] = useState("")
   let [tmpselectedSize, settmpSelectedSize] = useState(25)
-  let [tmpPhotoBorderSize, settmpPhotoBorderSize] = useState(3)
   let [tmpDescBorderSize, settmpDescBorderSize] = useState(0)
-
-
   let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
   let [tmpselectedfontSize, settmpSelectedfontSize] = useState("normal")
-
-
 
 
   const handleNewTex = (x) => {
@@ -70,14 +74,6 @@ export function CardDesign() {
     console.log(customTextObj)
     // settmpSelectedText(e.target.value)
   }
-
-
-  const handleBorderColor = (x) => {
-    if (!x.includes("gradient")) tmpsetBorderColor({})
-    setBorderColor(x)
-    if (x.includes("gradient")) tmpsetBorderColor(parseLinearGradient(grad2svg(x)))
-  }
-
 
 
   const handleDownloadImage = async () => {
@@ -152,8 +148,8 @@ export function CardDesign() {
                   backgroundSize: "cover"
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
-                <CardBorder index={borderIndex} tmpBorder={tmpBorder} borderColor={borderColor} disableMoving={overlayBehind} />
-                <CardPreset uploadedImage={file} photoBorder={photoBorder} name={name} desc={desc} index={presetIndex} disableMoving={overlayBehind} customText={customTextObj} activeText={selectedText} borderPX={tmpPhotoBorderSize} descPX={tmpDescBorderSize} lockCenter={lockCenter} cardType={type} />
+                <CardBorder />
+                <CardPreset customText={customTextObj} activeText={selectedText} descPX={tmpDescBorderSize} />
               </div>
             </CardContent>
 
@@ -169,7 +165,7 @@ export function CardDesign() {
               <div className="grid gap-2">
                 <Label htmlFor="image">Card Image</Label>
                 <div className="flex items-center gap-2">
-                  <Input id="image" type="file" onChange={e => setFile(URL.createObjectURL(e.target.files[0]))} />
+                  <Input id="image" type="file" onChange={e => changeImage(URL.createObjectURL(e.target.files[0]))} />
                 </div>
               </div>
               <div className="grid gap-2">
@@ -177,24 +173,24 @@ export function CardDesign() {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label htmlFor="background">Background</Label>
-                    <ColorPickerr id="background" color={bgColor} setColor={setBgColor} hideButtons={true} />
+                    <ColorPickerr id="background" color={bgColor} setColor={changeBgColor} hideButtons={true} />
 
                   </div>
                   <div>
                     <Label htmlFor="bgColor">Border</Label>
-                    <ColorPickerr id="bgColor" color={borderColor} setColor={handleBorderColor} />
+                    <ColorPickerr id="bgColor" color={borderColor} setColor={changeBorderColor} />
                   </div>
                   <div>
                     {/* <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button> */}
                   </div>
                   <div>
-                    <Button onClick={() => setOverlayBehind(!overlayBehind)} className="justify-self-start w-[90%] rounded-sm ">{overlayBehind ? "Enable" : "Disable"} Moving Image </Button>
+                    <Button onClick={setMovingImage} className="justify-self-start w-[90%] rounded-sm ">{enableImageMoving ? "Enable" : "Disable"} Moving Image </Button>
 
                   </div>
 
                   <div>
                     <Label htmlFor="style">Card Style</Label>
-                    <Select defaultValue="1" onValueChange={setPresetIndex}>
+                    <Select defaultValue="1" onValueChange={changLayoutIndex}>
                       <SelectTrigger id="style" className="w-[160px]">
                         <SelectValue placeholder="Select Style" />
                       </SelectTrigger>
@@ -213,7 +209,7 @@ export function CardDesign() {
 
                   <div>
                     <Label htmlFor="border">Border</Label>
-                    <Select defaultValue="1" onValueChange={setBorderIndex}>
+                    <Select defaultValue="1" onValueChange={changeBorderIndex}>
                       <SelectTrigger id="border" className="w-[160px]">
                         <SelectValue placeholder="Select border" />
                       </SelectTrigger>
@@ -274,8 +270,8 @@ export function CardDesign() {
 
                   <div>
                     <Label htmlFor="edit44">Photo Border Width</Label>
-                    <Input maxLength={2} id="edit44" value={tmpPhotoBorderSize} type="number" min="0" max="10"
-                      onChange={(e) => e.target.value > 10 ? null : settmpPhotoBorderSize(e.target.value)} />
+                    <Input maxLength={2} id="edit44" defaultValue="3" type="number" min="0" max="10"
+                      onChange={(e) => e.target.value > 10 ? null : changePhotoBorderSize(e.target.value)} />
                   </div>
 
                   <div>
@@ -310,12 +306,12 @@ export function CardDesign() {
                   </div>
                 </RadioGroup> */}
               </div>
-              {(presetIndex !== "custom1" && presetIndex !== "custom2") ?
+              {(layoutIndex !== "custom1" && layoutIndex !== "custom2") ?
                 <>
                   <div className="grid gap-2">
                     <Label htmlFor="title">Card Title</Label>
                     <Input maxLength={25} id="title" type="text" placeholder="Enter card title"
-                      onInput={x => setName(x.target.value)} />
+                      onInput={x => changeTitle(x.target.value)} />
                   </div>
                   <Select onValueChange={setTitleWeight}>
                     <SelectTrigger id="selectedBold" className="w-[160px]">
@@ -327,11 +323,11 @@ export function CardDesign() {
                       <SelectItem value="900">Bolder</SelectItem>
                     </SelectContent>
                   </Select>
-                  {presetIndex == "3" &&
+                  {layoutIndex == "3" &&
                     <div className="grid gap-2">
                       <Label htmlFor="type">Card Type</Label>
                       <Input maxLength={25} id="type" type="text" defaultValue="[ TRAP CARD ]" placeholder="Enter card type"
-                        onInput={x => setType(x.target.value)} />
+                        onInput={x => changeType(x.target.value)} />
                     </div>
                   }
                   <div className="grid gap-2">
@@ -340,14 +336,14 @@ export function CardDesign() {
                       id="description"
                       placeholder="Enter card description"
                       className="min-h-[100px]"
-                      onChange={e => setDesc(e.target.value)}
+                      onChange={e => changeDesc(e.target.value)}
                     />
                   </div>
                 </>
                 :
                 <div className="grid gap-2">
                   <Button onClick={addCustomText} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
-                  <Button onClick={(e) => setlockCenter(!lockCenter)} className="justify-self-start w-[45%] rounded-sm ">{lockCenter ? "Unlock" : "Lock"} center</Button>
+                  <Button onClick={changeCenterLocked} className="justify-self-start w-[45%] rounded-sm ">{centerLocked ? "Unlock" : "Lock"} center</Button>
 
                   <Label htmlFor="addedText">Active Text Layer</Label>
                   <Select value={selectedText} onValueChange={(x) => handleNewTex(x)}>
@@ -420,47 +416,3 @@ const DropdownList = ({ customTextObj }) => (
 )
 
 
-function parseLinearGradient(svgString) {
-  // Use regex to extract the attributes and stops
-  const gradientRegex = /<linearGradient[^>]+>/;
-  const stopRegex = /<stop[^>]+>/g;
-
-  // Extract the linearGradient tag
-  const linearGradientMatch = svgString.match(gradientRegex);
-  if (!linearGradientMatch) return null;
-
-  const linearGradientTag = linearGradientMatch[0];
-
-  // Extract attributes from the linearGradient tag
-  const angleMatch = linearGradientTag.match(/data-gradient-angle="([^"]+)"/);
-  const x1Match = linearGradientTag.match(/x1="([^"]+)"/);
-  const y1Match = linearGradientTag.match(/y1="([^"]+)"/);
-  const x2Match = linearGradientTag.match(/x2="([^"]+)"/);
-  const y2Match = linearGradientTag.match(/y2="([^"]+)"/);
-
-  const gradientData = {
-    angle: true,
-    x1: x1Match ? x1Match[1] : null,
-    y1: y1Match ? y1Match[1] : null,
-    x2: x2Match ? x2Match[1] : null,
-    y2: y2Match ? y2Match[1] : null,
-    stops: []
-  };
-
-  // Extract all stop tags
-  const stopMatches = svgString.match(stopRegex);
-  if (stopMatches) {
-    stopMatches.forEach(stopTag => {
-      const offsetMatch = stopTag.match(/offset="([^"]+)"/);
-      const styleMatch = stopTag.match(/style="([^"]+)"/);
-      const colorMatch = styleMatch ? styleMatch[1].match(/stop-color:\s*([^;]+);?/) : null;
-
-      gradientData.stops.push({
-        offset: offsetMatch ? offsetMatch[1] : null,
-        color: colorMatch ? colorMatch[1] : null
-      });
-    });
-  }
-
-  return gradientData;
-}

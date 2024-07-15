@@ -7,10 +7,16 @@ import {
   TransformComponent,
 } from "react-zoom-pan-pinch";
 
-export function RenderCardImage({ image, showBorder, wid, hei, mb, borderPX }) {
+import { useAppStore } from "@/helper/globalState";
+
+export function RenderCardImage({wid, hei, mb }) {
+  let image = useAppStore((state) => state.imageData)
+  let photoBorderSize = useAppStore((state) => state.photoBorderSize)
+
+
   return (
     <div
-      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, outlineWidth: `${borderPX}px` }}
+      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, outlineWidth: `${photoBorderSize}px` }}
     >
       <TransformWrapper
         initialScale={1}
@@ -39,11 +45,14 @@ export function RenderCardImage({ image, showBorder, wid, hei, mb, borderPX }) {
 }
 
 
-export function RenderCardImageAbsolute({ image, showBorder, wid, hei, mb, topPos, borderPX }) {
+export function RenderCardImageAbsolute({ showBorder, wid, hei, mb, topPos }) {
+  let image = useAppStore((state) => state.imageData)
+  let photoBorderSize = useAppStore((state) => state.photoBorderSize)
+
   return (
     <div
     className="absolute"
-      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, top: topPos, outlineWidth: `${borderPX}px` }}
+      style={{ outlineStyle: image.length > 10 ? `solid` : "none", marginBottom: mb, top: topPos, outlineWidth: `${photoBorderSize}px` }}
     >
       <TransformWrapper
         initialScale={1}

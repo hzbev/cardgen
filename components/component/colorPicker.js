@@ -3,7 +3,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import useClickOutside from "./useClickOutside";
 import ColorPicker, { useColorPicker } from 'react-best-gradient-color-picker'
-
+import { useAppStore } from "@/helper/globalState";
 
 
 
