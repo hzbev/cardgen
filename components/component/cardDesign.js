@@ -29,12 +29,6 @@ export function CardDesign() {
   let changePhotoBorderSize = useAppStore((state) => state.changePhotoBorderSize)
   let changeCenterLocked = useAppStore((state) => state.changeCenterLocked)
 
-  // let changeSelectedTexture = useAppStore((state) => state.changeSelectedTexture)
-  // let changeSelectedBlendMode = useAppStore((state) => state.changeSelectedBlendMode)
-
-
-
-
   let bgColor = useAppStore((state) => state.bgColor)
   let borderColor = useAppStore((state) => state.borderColor)
   let layoutIndex = useAppStore((state) => state.layoutIndex)
@@ -67,17 +61,10 @@ export function CardDesign() {
     settmpSelectedColor(customTextObj[x]?.color || "#000000")
   }
 
-  const handleNewFontWeight = (x) => {
-    setSelectedText(x)
-    tmpselectedfontSize(customTextObj[x]?.weight || "normal")
-  }
-
   const editElementWeight = async (e) => {
     let tmpObj = { ...customTextObj }
     tmpObj[selectedText].weight = e
     setCustomTextObj(tmpObj)
-    console.log(customTextObj)
-    // settmpSelectedText(e.target.value)
   }
 
 
@@ -108,11 +95,7 @@ export function CardDesign() {
     let total = Object.keys(customTextObj).length
     let tmpObj = { ...customTextObj }
     tmpObj[total + 1] = { text: "example", color: "#000000", size: 25, rotation: "0", weight: "normal" }
-    // setSelectedText(total+1)
     setCustomTextObj(tmpObj)
-  }
-  const addCustomText111 = async (e) => {
-    console.log()
   }
 
   const editElementText = async (e) => {
