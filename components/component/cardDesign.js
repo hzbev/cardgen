@@ -27,6 +27,7 @@ export function CardDesign() {
   let changeBorderColor = useAppStore((state) => state.changeBorderColor)
   let setMovingImage = useAppStore((state) => state.setMovingImage)
   let changePhotoBorderSize = useAppStore((state) => state.changePhotoBorderSize)
+  let changDescBorderSize = useAppStore((state) => state.changDescBorderSize)
   let changeCenterLocked = useAppStore((state) => state.changeCenterLocked)
 
   let bgColor = useAppStore((state) => state.bgColor)
@@ -49,10 +50,7 @@ export function CardDesign() {
   let [customTextObj, setCustomTextObj] = useState({})
   let [tmpselectedText, settmpSelectedText] = useState("")
   let [tmpselectedSize, settmpSelectedSize] = useState(25)
-  let [tmpDescBorderSize, settmpDescBorderSize] = useState(0)
   let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
-  let [tmpselectedfontSize, settmpSelectedfontSize] = useState("normal")
-
 
   const handleNewTex = (x) => {
     setSelectedText(x)
@@ -137,7 +135,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder />
-                <CardPreset customText={customTextObj} activeText={selectedText} descPX={tmpDescBorderSize} />
+                <CardPreset customText={customTextObj} activeText={selectedText}  />
               </div>
             </CardContent>
 
@@ -264,8 +262,8 @@ export function CardDesign() {
 
                   <div>
                     <Label htmlFor="edit444">Description Border Width</Label>
-                    <Input maxLength={1} id="edit444" value={tmpDescBorderSize} type="number" min="0" max="5"
-                      onChange={(e) => e.target.value > 5 ? null : settmpDescBorderSize(e.target.value)} />
+                    <Input maxLength={1} id="edit444" defaultValue="0" type="number" min="0" max="5"
+                      onChange={(e) => e.target.value > 5 ? null : changDescBorderSize(e.target.value)} />
                   </div>
 
                 </div>
