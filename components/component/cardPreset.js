@@ -6,7 +6,7 @@ import { useRef, useEffect } from "react";
 import { useAppStore } from "@/helper/globalState";
 
 
-export function CardPreset({ customText, activeText }) {
+export function CardPreset({  }) {
     let centerLocked = useAppStore((state) => state.centerLocked)
 
     let cardTitle = useAppStore((state) => state.title)
@@ -14,6 +14,8 @@ export function CardPreset({ customText, activeText }) {
     let cardDesc = useAppStore((state) => state.desc)
     let layoutIndex = useAppStore((state) => state.layoutIndex)
     let descBorderSize = useAppStore((state) => state.descBorderSize)
+    let customData = useAppStore((state) => state.customData)
+    let selectedText = useAppStore((state) => state.selectedText)
 
 
     return (
@@ -69,7 +71,7 @@ export function CardPreset({ customText, activeText }) {
             } */}
 
             {(layoutIndex == "custom1" || layoutIndex == "custom2") &&
-                // CustomLayout(layoutIndex, customText, activeText)
+                // CustomLayout(layoutIndex, customData, selectedText)
                 <>
 
                     {layoutIndex == "custom1" &&
@@ -80,17 +82,17 @@ export function CardPreset({ customText, activeText }) {
                         </div>}
 
 
-                    {Object.keys(customText).map((x, i) => (
+                    {Object.keys(customData).map((x, i) => (
                         <div
                             key={i}
-                            className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
-                            {customText[x].text}
+                            className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == selectedText ? 20 : 10, fontSize: `${customData[x].size}px`, color: customData[x].color.includes("gradient") ? "transparent" : customData[x].color, backgroundImage: customData[x].color.includes("gradient") ? customData[x].color : "none", backgroundClip: customData[x].color.includes("gradient") ? "text" : "none", fontWeight: customData[x].weight }}>
+                            {customData[x].text}
                         </div>
                     ))}
 
                     <Moveable
                         snappable={true}
-                        target={document.querySelector(`.target-${activeText}`)}
+                        target={document.querySelector(`.target-${selectedText}`)}
 
                         bounds={{ top: 0, left: 0, bottom: 0, right: 0, position: "css" }}
                         origin={true}

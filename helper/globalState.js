@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { produce } from 'immer'
+
 
 export const useAppStore = create((set) => ({
     title: "Title",
@@ -12,16 +14,11 @@ export const useAppStore = create((set) => ({
     enableImageMoving: true,
     photoBorderSize: 3,
     descBorderSize: 0,
-
-
     selectedTexture: "0",
     selectedBlendMode: "overlay",
-
     centerLocked: false,
     selectedText: "none",
-
-
-    customTextObj: {},
+    customData: {},
 
 
     changeTitle: (x) => set((state) => ({ title: x })),
@@ -32,7 +29,7 @@ export const useAppStore = create((set) => ({
     changeBorder: (x) => set((state) => ({ borderIndex: x })),
     changeBgColor: (x) => set((state) => ({ bgColor: x })),
     changeBorderColor: (x) => set((state) => ({ borderColor: x })),
-    setMovingImage: () => set((state) => ({ enableImageMoving: !state.enableImageMoving })),
+    changeMovingImage: () => set((state) => ({ enableImageMoving: !state.enableImageMoving })),
     changePhotoBorderSize: (x) => set((state) => ({ photoBorderSize: x })),
     changDescBorderSize: (x) => set((state) => ({ descBorderSize: x })),
 
@@ -42,7 +39,15 @@ export const useAppStore = create((set) => ({
 
     changeCenterLocked: () => set((state) => ({ centerLocked: !state.centerLocked })),
     changeSelectedText: (x) => set((state) => ({ selectedText: x })),
-    
+
+    addCustomData: () => set(produce((state) => {
+        state.customData[Object.keys(state.customData).length + 1] = { text: "example", color: "#000000", size: 25, rotation: "0", weight: "normal" }
+    })),
+
+    editCustomData: (key, value) => set(produce((state) => {
+        state.customData[state.selectedText][key] = value
+    }))
+
 
 
 

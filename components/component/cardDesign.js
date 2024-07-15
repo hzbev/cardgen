@@ -16,6 +16,7 @@ import { CardBorder } from "./cardBorder"
 import { CardPreset } from "./cardPreset"
 
 
+
 export function CardDesign() {
   let changeTitle = useAppStore((state) => state.changeTitle)
   let changeType = useAppStore((state) => state.changeType)
@@ -25,51 +26,30 @@ export function CardDesign() {
   let changeBorderIndex = useAppStore((state) => state.changeBorder)
   let changeBgColor = useAppStore((state) => state.changeBgColor)
   let changeBorderColor = useAppStore((state) => state.changeBorderColor)
-  let setMovingImage = useAppStore((state) => state.setMovingImage)
+  let changeMovingImage = useAppStore((state) => state.changeMovingImage)
   let changePhotoBorderSize = useAppStore((state) => state.changePhotoBorderSize)
   let changDescBorderSize = useAppStore((state) => state.changDescBorderSize)
   let changeCenterLocked = useAppStore((state) => state.changeCenterLocked)
-
+  let changeSelectedText = useAppStore((state) => state.changeSelectedText)
+  let addCustomData = useAppStore((state) => state.addCustomData)
+  let editCustomData = useAppStore((state) => state.editCustomData)
+  // variables
   let bgColor = useAppStore((state) => state.bgColor)
   let borderColor = useAppStore((state) => state.borderColor)
   let layoutIndex = useAppStore((state) => state.layoutIndex)
   let enableImageMoving = useAppStore((state) => state.enableImageMoving)
   let centerLocked = useAppStore((state) => state.centerLocked)
-
+  let selectedText = useAppStore((state) => state.selectedText)
+  let customData = useAppStore((state) => state.customData)
 
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
 
-
-
   let [titleWeight, setTitleWeight] = useState("normal") //later
-
-
-  let [selectedText, setSelectedText] = useState("none")
-
-  let [customTextObj, setCustomTextObj] = useState({})
-  let [tmpselectedText, settmpSelectedText] = useState("")
-  let [tmpselectedSize, settmpSelectedSize] = useState(25)
-  let [tmpselectedColor, settmpSelectedColor] = useState("#000000")
-
-  const handleNewTex = (x) => {
-    setSelectedText(x)
-    settmpSelectedText(customTextObj[x]?.text || "")
-    settmpSelectedSize(customTextObj[x]?.size || 0)
-    settmpSelectedColor(customTextObj[x]?.color || "#000000")
-  }
-
-  const editElementWeight = async (e) => {
-    let tmpObj = { ...customTextObj }
-    tmpObj[selectedText].weight = e
-    setCustomTextObj(tmpObj)
-  }
-
 
   const handleDownloadImage = async () => {
     toPng(document.getElementById('print'), { quality: 100 })
       .then(function (toBlob) {
-
         fetch("/api/generateimage", {
           method: "POST",
           body: JSON.stringify({
@@ -89,34 +69,6 @@ export function CardDesign() {
       });
   };
 
-  const addCustomText = async (e) => {
-    let total = Object.keys(customTextObj).length
-    let tmpObj = { ...customTextObj }
-    tmpObj[total + 1] = { text: "example", color: "#000000", size: 25, rotation: "0", weight: "normal" }
-    setCustomTextObj(tmpObj)
-  }
-
-  const editElementText = async (e) => {
-    let tmpObj = { ...customTextObj }
-    tmpObj[selectedText].text = e.target.value
-    setCustomTextObj(tmpObj)
-    settmpSelectedText(e.target.value)
-  }
-
-  const editElementSize = async (e) => {
-    let tmpObj = { ...customTextObj }
-    if (e.target.value > 100 || e.target.value < 1) return
-    tmpObj[selectedText].size = e.target.value
-    setCustomTextObj(tmpObj)
-    settmpSelectedSize(e.target.value)
-  }
-
-  const editElementColor = async (e) => {
-    let tmpObj = { ...customTextObj }
-    tmpObj[selectedText].color = e
-    setCustomTextObj(tmpObj)
-    settmpSelectedColor(e)
-  }
 
 
 
@@ -135,7 +87,7 @@ export function CardDesign() {
                 }}
                 className={`pt-4 pb-4 rounded-lg w-[357px] h-[488px] flex flex-col items-center justify-center bg-blend-overlay relative z-5`}>
                 <CardBorder />
-                <CardPreset customText={customTextObj} activeText={selectedText}  />
+                <CardPreset />
               </div>
             </CardContent>
 
@@ -170,7 +122,7 @@ export function CardDesign() {
                     {/* <Button onClick={() => setPhotoBored(!photoBorder)} className="justify-self-start w-[90%] rounded-sm ">{photoBorder ? "Disable" : "Enable"} Photo Border</Button> */}
                   </div>
                   <div>
-                    <Button onClick={setMovingImage} className="justify-self-start w-[90%] rounded-sm ">{enableImageMoving ? "Enable" : "Disable"} Moving Image </Button>
+                    <Button onClick={changeMovingImage} className="justify-self-start w-[90%] rounded-sm ">{enableImageMoving ? "Enable" : "Disable"} Moving Image </Button>
 
                   </div>
 
@@ -328,17 +280,17 @@ export function CardDesign() {
                 </>
                 :
                 <div className="grid gap-2">
-                  <Button onClick={addCustomText} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
+                  <Button onClick={addCustomData} className="justify-self-start w-[45%] rounded-sm ">Add Draggable Text</Button>
                   <Button onClick={changeCenterLocked} className="justify-self-start w-[45%] rounded-sm ">{centerLocked ? "Unlock" : "Lock"} center</Button>
 
                   <Label htmlFor="addedText">Active Text Layer</Label>
-                  <Select value={selectedText} onValueChange={(x) => handleNewTex(x)}>
+                  <Select defaultValue={selectedText} onValueChange={changeSelectedText}>
                     <SelectTrigger id="addedText" className="w-[160px]">
                       <SelectValue placeholder="None" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">None</SelectItem>
-                      <DropdownList customTextObj={customTextObj}></DropdownList>
+                      <DropdownList customData={customData}></DropdownList>
 
                     </SelectContent>
                   </Select>
@@ -346,16 +298,16 @@ export function CardDesign() {
                     selectedText !== "none" &&
                     <>
                       <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
-                      <Input maxLength={25} id="edit1" value={tmpselectedText} defaultValue="example" type="text" placeholder="Enter card title"
-                        onChange={editElementText} />
+                      <Input maxLength={25} id="edit1" value={customData[selectedText].text} type="text" placeholder="Enter card title"
+                        onChange={(x) => editCustomData("text", x.target.value)} />
 
                       <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
-                      <Input maxLength={3} id="edit2" value={tmpselectedSize} type="number" min="25" max="100"
-                        onChange={editElementSize} />
+                      <Input maxLength={3} id="edit2" value={customData[selectedText].size} type="number" min="25" max="100"
+                        onChange={(x) => editCustomData("size", x.target.value)} />
 
-                      <ColorPickerr color={tmpselectedColor} setColor={editElementColor} hideButtons={false} />
+                      <ColorPickerr color={customData[selectedText].color} setColor={(x) => editCustomData("color", x)} hideButtons={false} />
 
-                      <Select onValueChange={editElementWeight}>
+                      <Select value={customData[selectedText].weight} onValueChange={(x) => editCustomData("weight", x)}>
                         <SelectTrigger id="selectedBold" className="w-[160px]">
                           <SelectValue placeholder="Normal" />
                         </SelectTrigger>
@@ -397,8 +349,8 @@ export function CardDesign() {
 
 
 
-const DropdownList = ({ customTextObj }) => (
-  Object.keys(customTextObj).map((x) => <SelectItem key={x} value={x}>{x}</SelectItem>)
+const DropdownList = ({ customData }) => (
+  Object.keys(customData).map((x) => <SelectItem key={x} value={x}>{x}</SelectItem>)
 )
 
 
