@@ -7,6 +7,9 @@ import { useAppStore } from "@/helper/globalState";
 
 
 export function CardPreset({ customText, activeText, descPX }) {
+    console.log(customText)
+    let centerLocked = useAppStore((state) => state.centerLocked)
+
     let cardTitle = useAppStore((state) => state.title)
     let cardType = useAppStore((state) => state.typeCard)
     let cardDesc = useAppStore((state) => state.desc)
@@ -65,67 +68,61 @@ export function CardPreset({ customText, activeText, descPX }) {
             } */}
 
             {(layoutIndex == "custom1" || layoutIndex == "custom2") &&
-                CustomLayout(layoutIndex, customText, activeText)
+                // CustomLayout(layoutIndex, customText, activeText)
+                <>
+
+                    {layoutIndex == "custom1" &&
+                        <RenderCardImageAbsolute wid={300} hei={300} mb="16px" topPos="50px" />}
+                    {layoutIndex == "custom2" &&
+                        <div className="absolute">
+                            <RenderCardImage wid={350} hei={480} mb="0" />
+                        </div>}
+
+
+                    {Object.keys(customText).map((x, i) => (
+                        <div
+                            key={i}
+                            className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
+                            {customText[x].text}
+                        </div>
+                    ))}
+
+                    <Moveable
+                        snappable={true}
+                        target={document.querySelector(`.target-${activeText}`)}
+
+                        bounds={{ top: 0, left: 0, bottom: 0, right: 0, position: "css" }}
+                        origin={true}
+                        edgeDraggable={false}
+                        edge={true}
+                        draggable={true}
+                        throttleDrag={0}
+                        onDrag={({
+                            target, transform,
+                        }) => {
+                            if (centerLocked)
+                                target.style.transform = `translate(0px${transform.slice(transform.indexOf(","))}`;
+                            else
+                                target.style.transform = transform;
+                        }}
+                        keepRatio={false}
+                        scalable={true}
+                        throttleScale={0}
+                        onScale={({
+                            target, transform,
+                        }) => {
+                            target.style.transform = transform;
+                        }}
+                        rotatable={true}
+                        throttleRotate={5}
+                        onRotate={({
+                            target, transform,
+                        }) => {
+                            target.style.transform = transform;
+                        }} />
+
+                </>
             }
         </>
     )
-}
-
-function CustomLayout(layoutIndex, customText, activeText) {
-    let centerLocked = useAppStore((state) => state.centerLocked)
-
-
-    return (<>
-
-        {layoutIndex == "custom1" &&
-            <RenderCardImageAbsolute wid={300} hei={300} mb="16px" topPos="50px" />}
-        {layoutIndex == "custom2" &&
-            <div className="absolute">
-                <RenderCardImage wid={350} hei={480} mb="0" />
-            </div>}
-
-
-        {Object.keys(customText).map((x, i) => (
-            <div
-                key={i}
-                className={`absolute w-max text-center target-${x} min-h-8`} style={{ zIndex: x == activeText ? 20 : 10, fontSize: `${customText[x].size}px`, color: customText[x].color.includes("gradient") ? "transparent" : customText[x].color, backgroundImage: customText[x].color.includes("gradient") ? customText[x].color : "none", backgroundClip: customText[x].color.includes("gradient") ? "text" : "none", fontWeight: customText[x].weight }}>
-                {customText[x].text}
-            </div>
-        ))}
-
-        <Moveable
-            snappable={true}
-            target={document.querySelector(`.target-${activeText}`)}
-
-            bounds={{ top: 0, left: 0, bottom: 0, right: 0, position: "css" }}
-            origin={true}
-            edgeDraggable={false}
-            edge={true}
-            draggable={true}
-            throttleDrag={0}
-            onDrag={({
-                target, transform,
-            }) => {
-                if (centerLocked)
-                    target.style.transform = `translate(0px${transform.slice(transform.indexOf(","))}`;
-                else
-                    target.style.transform = transform;
-            }}
-            keepRatio={false}
-            scalable={true}
-            throttleScale={0}
-            onScale={({
-                target, transform,
-            }) => {
-                target.style.transform = transform;
-            }}
-            rotatable={true}
-            throttleRotate={5}
-            onRotate={({
-                target, transform,
-            }) => {
-                target.style.transform = transform;
-            }} />
-
-    </>);
 }

@@ -18,7 +18,7 @@ export function ColorPickerr({ color, setColor, hideButtons }) {
         <div className="picker w-10 h-10">
             <div
                 className="swatch w-10 h-10 border-2 border-black"
-                style={{ backgroundColor: color.includes("gradient") ? null : color, backgroundImage: color.includes("gradient") ? color : null }}
+                style={{ backgroundColor: color?.includes("gradient") ? null : color, backgroundImage: color?.includes("gradient") ? color : null }}
                 onClick={() => toggle(true)}
             />
             {isOpen && (

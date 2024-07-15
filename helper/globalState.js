@@ -19,6 +19,9 @@ export const useAppStore = create((set) => ({
     selectedText: "none",
 
 
+    customTextObj: {},
+
+
     changeTitle: (x) => set((state) => ({ title: x })),
     changeType: (x) => set((state) => ({ typeCard: x })),
     changeDesc: (x) => set((state) => ({ desc: x })),
@@ -35,6 +38,7 @@ export const useAppStore = create((set) => ({
 
     changeCenterLocked: () => set((state) => ({ centerLocked: !state.centerLocked })),
     changeSelectedText: (x) => set((state) => ({ selectedText: x })),
+    
 
 
 

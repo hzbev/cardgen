@@ -29,7 +29,12 @@ export function CardDesign() {
   let changePhotoBorderSize = useAppStore((state) => state.changePhotoBorderSize)
   let changeCenterLocked = useAppStore((state) => state.changeCenterLocked)
 
-  // variables
+  // let changeSelectedTexture = useAppStore((state) => state.changeSelectedTexture)
+  // let changeSelectedBlendMode = useAppStore((state) => state.changeSelectedBlendMode)
+
+
+
+
   let bgColor = useAppStore((state) => state.bgColor)
   let borderColor = useAppStore((state) => state.borderColor)
   let layoutIndex = useAppStore((state) => state.layoutIndex)
