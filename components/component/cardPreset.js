@@ -46,6 +46,19 @@ export function CardPreset({ }) {
 
             {layoutIndex == "3" &&
                 <>
+                    <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
+                        <div className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
+                    </div>
+                    <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="75px" />
+                    <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
+                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardDesc}</p>
+                    </div>
+                </>
+            }
+
+
+            {layoutIndex == "4" &&
+                <>
                     <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-[15px]" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
                         <div style={{ fontWeight: cardTitleWeight, color: titleColor }} className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
                     </div>
@@ -59,20 +72,6 @@ export function CardPreset({ }) {
                 </>
             }
 
-            {/* {layoutIndex == "3" &&
-                <>
-                    <div className="text-center text-wrap w-[90%] mt-2 mb-5 absolute top-3" style={{ boxShadow: "3px 0px 3px 1px rgba(84,84,84,0.85), 0px 3px 3px 1px rgba(84,84,84,0.85), -3px 0px 3px 1px rgba(252,252,252,0.85), 0px -3px 3px 1px rgba(252,252,252,0.85)", borderRadius: "3px" }}>
-                        <div className="text-2xl font-bold truncate pb-1">{cardTitle}</div>
-                    </div>
-                    <div className="w-[90%] max-h-[126px] absolute top-[60px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
-                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">[TRAP CARD]</p>
-                    </div>
-                    <RenderCardImageAbsolute wid={250} hei={250} mb="16px" topPos="75px" />
-                    <div className="w-[90%] max-h-[126px] absolute top-[345px] p-[3px] bg-opacity-45 bg-white" style={{ outlineStyle: descBorderSize > 0 ? `solid` : "none", outlineWidth: `${descBorderSize}px` }}>
-                        <p className="h-[100%] max-h-[126px] text-wrap truncate w-[100%]">{cardDesc}</p>
-                    </div>
-                </>
-            } */}
 
             {(layoutIndex == "custom1" || layoutIndex == "custom2") &&
                 // CustomLayout(layoutIndex, customData, selectedText)

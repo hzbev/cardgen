@@ -42,6 +42,8 @@ export function CardDesign() {
   let bgColor = useAppStore((state) => state.bgColor)
   let borderColor = useAppStore((state) => state.borderColor)
   let layoutIndex = useAppStore((state) => state.layoutIndex)
+  let borderIndex = useAppStore((state) => state.borderIndex)
+
   let enableImageMoving = useAppStore((state) => state.enableImageMoving)
   let centerLocked = useAppStore((state) => state.centerLocked)
   let selectedText = useAppStore((state) => state.selectedText)
@@ -60,7 +62,7 @@ export function CardDesign() {
           method: "POST",
           body: JSON.stringify({
             "borderColor": borderColor,
-            "tmpBorder": tmpBorder,
+            "tmpBorder": borderIndex,
             "imgBlob": toBlob
           }),
           redirect: "follow"
@@ -153,6 +155,8 @@ export function CardDesign() {
                         <SelectItem value="1">1</SelectItem>
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+
 
                         <SelectItem value="custom1">Custom - Style 1</SelectItem>
                         <SelectItem value="custom2">Custom - Style 2</SelectItem>
@@ -254,7 +258,7 @@ export function CardDesign() {
                           </SelectContent>
                         </Select>
                       </div>
-                      {layoutIndex == "3" &&
+                      {layoutIndex == "4" &&
                         <div className="">
                           <Label htmlFor="type">Card Type</Label>
                           <Input maxLength={25} id="type" type="text" defaultValue="[ TRAP CARD ]" placeholder="Enter card type"
@@ -292,8 +296,6 @@ export function CardDesign() {
               </div>
               {(layoutIndex !== "custom1" && layoutIndex !== "custom2") ?
                 <>
-
-
                   <div className="grid gap-2">
                     <Label htmlFor="description">Card Description</Label>
                     <Textarea
@@ -322,18 +324,26 @@ export function CardDesign() {
                   </Select>
                   {
                     selectedText !== "none" &&
-                    <>
-                      <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
-                      <Input maxLength={25} id="edit1" value={customData[selectedText].text} type="text" placeholder="Enter card title"
-                        onChange={(x) => editCustomData("text", x.target.value)} />
+                    <div className="grid gap-3 grid-cols-2">
+                      <div>
+                        <Label htmlFor="edit1">Layer {selectedText}&apos;s text</Label>
+                        <Input maxLength={25} id="edit1" value={customData[selectedText].text} type="text" placeholder="Enter card title"
+                          onChange={(x) => editCustomData("text", x.target.value)} />
+                      </div>
 
-                      <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
-                      <Input maxLength={3} id="edit2" value={customData[selectedText].size} type="number" min="25" max="100"
-                        onChange={(x) => editCustomData("size", x.target.value)} />
+                      <div>
+                        <Label htmlFor="edit2">Layer {selectedText}&apos;s size</Label>
+                        <Input maxLength={3} id="edit2" value={customData[selectedText].size} type="number" min="25" max="100"
+                          onChange={(x) => editCustomData("size", x.target.value)} />
+                      </div>
+                    <div>
+                    <Label>Color</Label>
+                      <ColorPickerr color={customData[selectedText].color} setColor={(x) => editCustomData("color", x)} hideButtons={true} />
+                    </div>
 
-                      <ColorPickerr color={customData[selectedText].color} setColor={(x) => editCustomData("color", x)} hideButtons={false} />
-
-                      <Select value={customData[selectedText].weight} onValueChange={(x) => editCustomData("weight", x)}>
+                      <div>
+                        <Label htmlFor="selectedBold">Weight</Label>
+                        <Select value={customData[selectedText].weight} onValueChange={(x) => editCustomData("weight", x)}>
                         <SelectTrigger id="selectedBold" className="w-[160px]">
                           <SelectValue placeholder="Normal" />
                         </SelectTrigger>
@@ -343,8 +353,10 @@ export function CardDesign() {
                           <SelectItem value="900">Bolder</SelectItem>
                         </SelectContent>
                       </Select>
+                      </div>
+      
 
-                    </>
+                    </div>
                   }
 
                 </div>
