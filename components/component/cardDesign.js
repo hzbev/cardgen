@@ -56,28 +56,28 @@ export function CardDesign() {
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
 
-  let fonts = [{
-    "family": "Open Sans",
-    "url": "https://fonts.gstatic.com/s/opensans/v35/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2",
-    "options": {
-      "weight": 400,
-      "style": "normal"
-    }
-  }, {
-    family: 'Bungee Spice',
-    options: { style: 'normal', weight: '400' },
-    url: 'https://fonts.gstatic.com/s/bungeespice/v12/nwpTtK2nIhxE0q-IwgSpZBqyyCg_MMA.woff2'
-  }, {
-    family: 'Nabla',
-    options: { style: 'normal', weight: '400' },
-    url: 'https://fonts.gstatic.com/s/nabla/v10/j8_D6-LI0Lvpe7Makz5UhJt9C3uqg_X_75gyGS4jAxsNIjrRBRdeFQx8.woff2'
-  }, {
-    family: 'Foldit',
-    options: { style: 'normal', weight: '400' },
-    url: 'https://fonts.gstatic.com/s/foldit/v5/aFTI7PF3Y3c9WdjNrRVE0Rk2b7j8XpAMqa1eYQ.woff2'
-  }]
+  // let fonts = [{
+  //   "family": "Open Sans",
+  //   "url": "https://fonts.gstatic.com/s/opensans/v35/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2",
+  //   "options": {
+  //     "weight": 400,
+  //     "style": "normal"
+  //   }
+  // }, {
+  //   family: 'Bungee Spice',
+  //   options: { style: 'normal', weight: '400' },
+  //   url: 'https://fonts.gstatic.com/s/bungeespice/v12/nwpTtK2nIhxE0q-IwgSpZBqyyCg_MMA.woff2'
+  // }, {
+  //   family: 'Nabla',
+  //   options: { style: 'normal', weight: '400' },
+  //   url: 'https://fonts.gstatic.com/s/nabla/v10/j8_D6-LI0Lvpe7Makz5UhJt9C3uqg_X_75gyGS4jAxsNIjrRBRdeFQx8.woff2'
+  // }, {
+  //   family: 'Foldit',
+  //   options: { style: 'normal', weight: '400' },
+  //   url: 'https://fonts.gstatic.com/s/foldit/v5/aFTI7PF3Y3c9WdjNrRVE0Rk2b7j8XpAMqa1eYQ.woff2'
+  // }]
 
-  useFonts(fonts)
+  // useFonts(fonts)
 
   const handleDownloadImage = async () => {
     toPng(document.getElementById('print'), { quality: 100 })
