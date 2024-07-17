@@ -36,7 +36,7 @@ export function CardPreset({ }) {
 
             {layoutIndex == "2" &&
                 <>
-                    <RenderCardImage wid={350} hei={480} mb="0" />
+                    <RenderCardImage wid={357} hei={488} mb="0" />
                     <div className="text-center text-wrap w-[90%] absolute z-30 mt-[450px]">
                         <div style={{ fontWeight: cardTitleWeight, color: titleColor }} className="text-2xl font-bold h-[100%] truncate">{cardTitle}</div>
                         {/* <p className="h-[80%] text-wrap truncate w-[95%] max-h-[75%]">{cardDesc}</p> */}
@@ -81,7 +81,7 @@ export function CardPreset({ }) {
                         <RenderCardImageAbsolute wid={300} hei={300} mb="16px" topPos="50px" />}
                     {layoutIndex == "custom2" &&
                         <div className="absolute">
-                            <RenderCardImage wid={350} hei={480} mb="0" />
+                            <RenderCardImage wid={357} hei={488} mb="0" />
                         </div>}
 
 

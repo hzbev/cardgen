@@ -14,6 +14,7 @@ import { useState, useRef } from "react"
 import { toPng } from 'html-to-image';
 import { CardBorder } from "./cardBorder"
 import { CardPreset } from "./cardPreset"
+import { useFonts } from "@/helper/useFont"
 
 
 
@@ -54,6 +55,29 @@ export function CardDesign() {
 
   let [selectedTexture, setSelectedTexture] = useState('0')
   let [selectedBlend, setSelectedBlend] = useState('overlay')
+
+  let fonts = [{
+    "family": "Open Sans",
+    "url": "https://fonts.gstatic.com/s/opensans/v35/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2",
+    "options": {
+      "weight": 400,
+      "style": "normal"
+    }
+  }, {
+    family: 'Bungee Spice',
+    options: { style: 'normal', weight: '400' },
+    url: 'https://fonts.gstatic.com/s/bungeespice/v12/nwpTtK2nIhxE0q-IwgSpZBqyyCg_MMA.woff2'
+  }, {
+    family: 'Nabla',
+    options: { style: 'normal', weight: '400' },
+    url: 'https://fonts.gstatic.com/s/nabla/v10/j8_D6-LI0Lvpe7Makz5UhJt9C3uqg_X_75gyGS4jAxsNIjrRBRdeFQx8.woff2'
+  }, {
+    family: 'Foldit',
+    options: { style: 'normal', weight: '400' },
+    url: 'https://fonts.gstatic.com/s/foldit/v5/aFTI7PF3Y3c9WdjNrRVE0Rk2b7j8XpAMqa1eYQ.woff2'
+  }]
+
+  useFonts(fonts)
 
   const handleDownloadImage = async () => {
     toPng(document.getElementById('print'), { quality: 100 })
@@ -173,9 +197,11 @@ export function CardDesign() {
                         <SelectValue placeholder="Select border" />
                       </SelectTrigger>
                       <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
                         <SelectItem value="1">1</SelectItem>
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
+
 
                       </SelectContent>
                     </Select>
@@ -336,25 +362,25 @@ export function CardDesign() {
                         <Input maxLength={3} id="edit2" value={customData[selectedText].size} type="number" min="25" max="100"
                           onChange={(x) => editCustomData("size", x.target.value)} />
                       </div>
-                    <div>
-                    <Label>Color</Label>
-                      <ColorPickerr color={customData[selectedText].color} setColor={(x) => editCustomData("color", x)} hideButtons={true} />
-                    </div>
+                      <div>
+                        <Label>Color</Label>
+                        <ColorPickerr color={customData[selectedText].color} setColor={(x) => editCustomData("color", x)} hideButtons={true} />
+                      </div>
 
                       <div>
                         <Label htmlFor="selectedBold">Weight</Label>
                         <Select value={customData[selectedText].weight} onValueChange={(x) => editCustomData("weight", x)}>
-                        <SelectTrigger id="selectedBold" className="w-[160px]">
-                          <SelectValue placeholder="Normal" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="normal">Normal</SelectItem>
-                          <SelectItem value="bold">Bold</SelectItem>
-                          <SelectItem value="900">Bolder</SelectItem>
-                        </SelectContent>
-                      </Select>
+                          <SelectTrigger id="selectedBold" className="w-[160px]">
+                            <SelectValue placeholder="Normal" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="bold">Bold</SelectItem>
+                            <SelectItem value="900">Bolder</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-      
+
 
                     </div>
                   }
